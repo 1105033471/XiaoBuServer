@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Atlas>
+    <Texture filename="oldfish_axe.tex"/>
+    <Elements>
+        <Element name="oldfish_axe.tex" u1="0" u2="0.99" v1="0" v2="0.99"/>
+    </Elements>
+</Atlas>
