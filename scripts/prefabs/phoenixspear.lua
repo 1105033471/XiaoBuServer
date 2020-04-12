@@ -96,8 +96,10 @@ local function onattack(inst, attacker, target)
 			fx.Transform:SetScale(0.3, 0.3, 0.3)
 			fx.Transform:SetPosition(pos:Get())
 			
-			target.components.freezable:AddColdness(0.5)
-			target.components.freezable:SpawnShatterFX()
+            if target.components.freezable then
+                target.components.freezable:AddColdness(0.5)
+                target.components.freezable:SpawnShatterFX()
+            end
 			target.components.health:DoDelta(-2)				-- 冰冻造成2点伤害
 			
 			local prefab = "icespike_fx_"..math.random(1,4)		-- 冰冻特效
