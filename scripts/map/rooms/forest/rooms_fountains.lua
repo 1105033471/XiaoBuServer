@@ -7,14 +7,14 @@ AddRoom("FountainPatch",
 	{
 		countprefabs =	--必定会出现对应数量的物品的表
 		{
-			pugalisk_fountain = function () return 1 end,	-- 喷泉(标志性建筑)
+			-- pugalisk_fountain = function () return 1 end,	-- 喷泉(标志性建筑)
 		},
 		countstaticlayouts = {		-- static_layout在这里调用
-			["Fountains"] = 1,	-- 为什么static_layout里不加载物品
+			["Fountains"] = 1,	-- 为什么static_layout里不加载物品，因为prefab名字要写在type里而不是name里
 			["MushroomRingLarge"] = 0.6,
 			["LivingTree"] = 0.3,
 		},
-		distributepercent = 0.4,	--distributeprefabs中物品的区域密集程度
+		distributepercent = 0.2,	--distributeprefabs中物品的区域密集程度
 		distributeprefabs =	--物品的数量分布比例
 		{
             fireflies = 0.1,

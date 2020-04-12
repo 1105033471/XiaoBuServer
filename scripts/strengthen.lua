@@ -229,11 +229,19 @@ end)
 -- 自动复活
 local function Clear(player)
 	player.resurrect = nil
+    -- print(" clear resurrect data")
+    if player:HasTag("playerghost") then
+        -- print(" try to resurrect")
+        player.resurrect = player:DoTaskInTime(math.random(5,10), function(player)
+            ExecuteConsoleCommand('local player = UserToPlayer("'..player.userid..'") player:PushEvent("respawnfromghost")')
+        end)
+    end
 end
 
 AddPlayerPostInit(function(player)
 	player:ListenForEvent("death", function(player, data)
 		if player.resurrect == nil then
+            -- print(" try to resurrect")
 			player.resurrect = player:DoTaskInTime(math.random(5,10), function(player)
 				ExecuteConsoleCommand('local player = UserToPlayer("'..player.userid..'") player:PushEvent("respawnfromghost")')
 			end)
@@ -244,12 +252,25 @@ end)
 
 -- 人物死亡装备不掉落
 AddComponentPostInit("inventory", function(Inventory, inst)
+    ---[[
 	Inventory.oldDropEverythingFn = Inventory.DropEverything
 	function Inventory:DropEverything(ondeath, keepequip)
-		if not inst:HasTag("player") then
+		if not inst:HasTag("player") then   -- 非玩家，原版掉落机制
 			return Inventory:oldDropEverythingFn(ondeath, keepequip)
-		else
+		else        -- 玩家
+            -- print(" player dead drop function")
+            if inst.components.inventory:IsFull() then  -- 身上东西满了之后，随机掉落一个格子(这里的判定不包括背包，不过无所谓)
+                -- print(" player inventory is full")
+                local slot = math.random(1, inst.components.inventory:GetNumSlots())
+                -- print(" select random slot is: "..tostring(slot))
+                inst.components.inventory:DropItem(inst.components.inventory:GetItemInSlot(slot), true)
+                -- print(" drop item ok")
+            end
 			return true
 		end
 	end
+    --]]
+    -- if inst:HasTag("player") then    -- 然而并没有什么卵用，也许klei提供了一个假的接口？
+        -- inst.components.inventory:DisableDropOnDeath()
+    -- end
 end)
