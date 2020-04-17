@@ -38,6 +38,7 @@ modimport("scripts/flowerbox.lua")                      -- 花盒
 modimport("scripts/hamlets.lua")                        -- 哈姆雷特物品
 modimport("scripts/usefulboats.lua")                    -- 更实用的船
 modimport("scripts/shadowbox.lua")                      -- 末影箱
+modimport("scripts/moon.lua")                           -- 月岛物品
 
 --生物加强
 if strength_monster then

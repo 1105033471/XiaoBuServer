@@ -11,7 +11,7 @@ local PI = 3.14159
 
 -- 掉落物品自动堆叠
 
-local function AnimPut(item, target)
+GLOBAL.LM_AnimPut = function(item, target)
 	if target and target ~= item and target.prefab == item.prefab and item.components.stackable and not item.components.stackable:IsFull() and target.components.stackable and not target.components.stackable:IsFull() then
 		local start_fx = SpawnPrefab("small_puff")
 		start_fx.Transform:SetPosition(target.Transform:GetWorldPosition())
@@ -35,7 +35,7 @@ function LootDropper:FlingItem(loot, pt, bouncedcb)
 					local x, y, z = pos:Get()
 					local ents = TheSim:FindEntities(x, y, z, SEE_ITEM_STACK_DIST, { "_inventoryitem" }, { "INLIMBO", "NOCLICK", "catchable", "fire" })
 					for _,obj in pairs(ents) do
-						AnimPut(loot, obj)
+						LM_AnimPut(loot, obj)
 					end
 				end
 			end)
@@ -70,7 +70,7 @@ function Beard:Shave(who, withwhat)
 					local x, y, z = pos:Get()
 					local ents = TheSim:FindEntities(x, y, z, SEE_ITEM_STACK_DIST, { "_inventoryitem" }, { "INLIMBO", "NOCLICK", "catchable", "fire" })
 					for _,obj in pairs(ents) do
-						AnimPut(bit, obj)
+						LM_AnimPut(bit, obj)
 					end
 				end
 			end)
@@ -124,7 +124,7 @@ function Terraformer:Terraform(pt, spawnturf)
 					local x, y, z = pos:Get()
 					local ents = TheSim:FindEntities(x, y, z, SEE_ITEM_STACK_DIST, { "_inventoryitem" }, { "INLIMBO", "NOCLICK", "catchable", "fire" })
 					for _,obj in pairs(ents) do
-						AnimPut(loot, obj)
+						LM_AnimPut(loot, obj)
 					end
 				end
 			end)
@@ -154,7 +154,7 @@ AddPrefabPostInit("pigking", function(inst)
 			   if objBase:IsValid() and objBase.components.stackable and not objBase.components.stackable:IsFull() then
 				   for _,obj in pairs(ents) do
 					   if obj:IsValid() then
-						   AnimPut(objBase, obj)
+						   LM_AnimPut(objBase, obj)
 					   end
 				   end
 			   end
@@ -181,7 +181,7 @@ AddPrefabPostInit("antlion", function(inst)
 				if objBase:IsValid() and objBase.components.stackable and not objBase.components.stackable:IsFull() then
 					for _,obj in pairs(ents) do
 						if obj:IsValid() then
-							AnimPut(objBase, obj)
+							LM_AnimPut(objBase, obj)
 						end
 					end
 				end
@@ -200,7 +200,7 @@ local function OnEat(inst, food)
 			poop.Transform:SetPosition(inst.Transform:GetWorldPosition())
 			local ents = TheSim:FindEntities(x, y, z, SEE_ITEM_STACK_DIST, { "_inventoryitem" }, { "INLIMBO", "NOCLICK", "catchable", "fire" })
 			for _,obj in pairs(ents) do
-				AnimPut(poop, obj)
+				LM_AnimPut(poop, obj)
 			end
 		elseif food.components.edible.foodtype == FOODTYPE.MEAT and
 		inst.components.werebeast ~= nil and
@@ -249,7 +249,7 @@ AddPrefabPostInit("rock_avocado_fruit",function(inst)
 				if objBase:IsValid() and objBase.components.stackable and not objBase.components.stackable:IsFull() then
 					for _, obj in pairs(ents) do
 						if obj:IsValid() then 
-							AnimPut(objBase, obj)
+							LM_AnimPut(objBase, obj)
 						end
 					end
 				end

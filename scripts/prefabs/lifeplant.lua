@@ -36,37 +36,48 @@ local function doresurrect(inst, haunter)
 end
 
 local function sparkle(inst, player)
-	local sparkle = SpawnPrefab("lifeplant_sparkle")
-	-- print("spawn sparkle "..tostring(sparkle))
-	-- print("player is "..tostring(player))
-	local x,y,z = player.Transform:GetWorldPosition()
-	x = x or 0
-	y = y or 0
-	z = z or 0
-	sparkle.Transform:SetPosition(x, y, z)
+    local x1, y1, z1 = inst.Transform:GetWorldPosition()
+    local player_true = FindClosestPlayerInRange(x1, y1, z1, 6, true)
+    
+    if player_true then
+        local sparkle = SpawnPrefab("lifeplant_sparkle")
+        -- print("spawn sparkle "..tostring(sparkle))
+        -- print("player is "..tostring(player_true))
+        local x,y,z = player_true.Transform:GetWorldPosition()
+        x = x or 0
+        y = y or 0
+        z = z or 0
+        sparkle.Transform:SetPosition(x, y, z)
+    end
 end
 
 local function drain(inst, player)
+    local x1, y1, z1 = inst.Transform:GetWorldPosition()
+    local player_true = FindClosestPlayerInRange(x1, y1, z1, 6, true)
+    
 	if not TheWorld.ismastersim then		-- 客机不操作
         return inst
     end
-	player.components.talker:Say("♥")		-- 2333
-	local x1, y1, z1 = inst.Transform:GetWorldPosition()
-	local x2, y2, z2 = player.Transform:GetWorldPosition()
-	x2 = x2 or x1		-- 当附近的玩家离开这个世界时，会出现找不到坐标
-	y2 = y2 or y1
-	z2 = z2 or z1
-	local distance = math.sqrt((x1-x2)*(x1-x2) + (z1-z2)*(z1-z2))
-	-- print("distance is "..distance)
-	local hungry_delta = 2/(distance+0.08)^(0.25) + 0.5		-- 函数模拟：距离为0时饥饿下降速度为4左右，距离为4时饥饿下降速度为1左右
-	-- print("delta is "..hungry_delta)
-	hungry_delta = math.floor(hungry_delta*100)/100			-- 取两位小数
-	player.components.hunger:DoDelta(-hungry_delta)
+    
+    if player_true then
+        player_true.components.talker:Say("♥")		-- 2333
+        local x1, y1, z1 = inst.Transform:GetWorldPosition()
+        local x2, y2, z2 = player_true.Transform:GetWorldPosition()
+        x2 = x2 or x1		-- 当附近的玩家离开这个世界时，会出现找不到坐标
+        y2 = y2 or y1
+        z2 = z2 or z1
+        local distance = math.sqrt((x1-x2)*(x1-x2) + (z1-z2)*(z1-z2))
+        -- print("distance is "..distance)
+        local hungry_delta = 2/(distance+0.08)^(0.25) + 0.5		-- 函数模拟：距离为0时饥饿下降速度为4左右，距离为4时饥饿下降速度为1左右
+        -- print("delta is "..hungry_delta)
+        hungry_delta = math.floor(hungry_delta*100)/100			-- 取两位小数
+        player_true.components.hunger:DoDelta(-hungry_delta)
+    end
 end
 
 local function onnear(inst, player)
-	inst.starvetask = inst:DoPeriodicTask(0.5,function() sparkle(inst, player) end)
-	inst.starvetask2 = inst:DoPeriodicTask(2,function() drain(inst, player) end)
+	inst.starvetask = inst:DoPeriodicTask(0.5, function() sparkle(inst, player) end)
+	inst.starvetask2 = inst:DoPeriodicTask(2, function() drain(inst, player) end)
 	inst.SoundEmitter:PlaySound("dontstarve_DLC003/common/crafted/flower_of_life/fx_LP","drainloop")
 end
 

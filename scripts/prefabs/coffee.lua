@@ -47,139 +47,139 @@ local function fn()
 
 	inst:AddTag("preparedfood")
 	MakeInventoryFloatable(inst, "small", 0.05, {1.2, 0.75, 1.2})
-	inst.entity:SetPristine()
+    inst.entity:SetPristine()
 
-	if not TheWorld.ismastersim then
-		return inst
-	end
+    if not TheWorld.ismastersim then
+        return inst
+    end
 
-	inst:AddComponent("edible")
-	inst.components.edible.healthvalue = 1
-	inst.components.edible.hungervalue = 10
-	inst.components.edible.foodtype = FOODTYPE.GOODIES
-	inst.components.edible.sanityvalue = -5
-	inst.components.edible.temperaturedelta = 5
-	inst.components.edible.temperatureduration = 60
-	inst.components.edible:SetOnEatenFn(StartCaffeineFn)
+    inst:AddComponent("edible")
+    inst.components.edible.healthvalue = 1
+    inst.components.edible.hungervalue = 10
+    inst.components.edible.foodtype = FOODTYPE.GOODIES
+    inst.components.edible.sanityvalue = -5
+    inst.components.edible.temperaturedelta = 5
+    inst.components.edible.temperatureduration = 60
+    inst.components.edible:SetOnEatenFn(StartCaffeineFn)
 
-	inst:AddComponent("inspectable")
-	inst.wet_prefix = "soggy"
-	
-	inst:AddComponent("inventoryitem")
-	inst.components.inventoryitem.atlasname = "images/inventoryimages/coffee.xml"
+    inst:AddComponent("inspectable")
+    inst.wet_prefix = "soggy"
+    
+    inst:AddComponent("inventoryitem")
+    inst.components.inventoryitem.atlasname = "images/inventoryimages/coffee.xml"
 
-	inst:AddComponent("stackable")
-	inst.components.stackable.maxsize = TUNING.STACK_SIZE_SMALLITEM
+    inst:AddComponent("stackable")
+    inst.components.stackable.maxsize = TUNING.STACK_SIZE_SMALLITEM
 
-	inst:AddComponent("perishable")
-	inst.components.perishable:SetPerishTime(TUNING.PERISH_FAST)
-	inst.components.perishable:StartPerishing()
-	inst.components.perishable.onperishreplacement = "spoiled_food"
+    inst:AddComponent("perishable")
+    inst.components.perishable:SetPerishTime(TUNING.PERISH_FAST)
+    inst.components.perishable:StartPerishing()
+    inst.components.perishable.onperishreplacement = "spoiled_food"
 
-	MakeSmallBurnable(inst)
-	MakeSmallPropagator(inst)
-	MakeHauntableLaunchAndPerish(inst)
-	AddHauntableCustomReaction(inst, function(inst, haunter) return false end, true, false, true)
+    MakeSmallBurnable(inst)
+    MakeSmallPropagator(inst)
+    MakeHauntableLaunchAndPerish(inst)
+    AddHauntableCustomReaction(inst, function(inst, haunter) return false end, true, false, true)
 
-	inst:AddComponent("bait")
-	inst:AddComponent("tradable")
+    inst:AddComponent("bait")
+    inst:AddComponent("tradable")
 
-	return inst
+    return inst
 end
 
 local function feijoadafn()
-	local inst = CreateEntity()
+    local inst = CreateEntity()
 
-	inst.entity:AddTransform()
-	inst.entity:AddAnimState()
-	inst.entity:AddNetwork()
+    inst.entity:AddTransform()
+    inst.entity:AddAnimState()
+    inst.entity:AddNetwork()
 
-	MakeInventoryPhysics(inst)
-	inst.AnimState:SetBuild("feijoada")
-	inst.AnimState:SetBank("feijoada")
-	inst.AnimState:PlayAnimation("idle", false)
+    MakeInventoryPhysics(inst)
+    inst.AnimState:SetBuild("feijoada")
+    inst.AnimState:SetBank("feijoada")
+    inst.AnimState:PlayAnimation("idle", false)
 
-	inst:AddTag("preparedfood")
-	MakeInventoryFloatable(inst, "small", 0.05, {1.2, 0.75, 1.2})
-	inst.entity:SetPristine()
+    inst:AddTag("preparedfood")
+    MakeInventoryFloatable(inst, "small", 0.05, {1.2, 0.75, 1.2})
+    inst.entity:SetPristine()
 
-	if not TheWorld.ismastersim then
-		return inst
-	end
+    if not TheWorld.ismastersim then
+        return inst
+    end
 
-	inst:AddComponent("edible")
-	inst.components.edible.healthvalue = 80
-	inst.components.edible.hungervalue = 75
-	inst.components.edible.foodtype = FOODTYPE.MEAT
-	inst.components.edible.sanityvalue = 15
+    inst:AddComponent("edible")
+    inst.components.edible.healthvalue = 80
+    inst.components.edible.hungervalue = 75
+    inst.components.edible.foodtype = FOODTYPE.MEAT
+    inst.components.edible.sanityvalue = 15
 
-	inst:AddComponent("inspectable")
-	
-	inst:AddComponent("inventoryitem")
-	inst.components.inventoryitem.atlasname = "images/inventoryimages/feijoada.xml"
+    inst:AddComponent("inspectable")
+    
+    inst:AddComponent("inventoryitem")
+    inst.components.inventoryitem.atlasname = "images/inventoryimages/feijoada.xml"
 
-	inst:AddComponent("stackable")
-	inst.components.stackable.maxsize = TUNING.STACK_SIZE_SMALLITEM
+    inst:AddComponent("stackable")
+    inst.components.stackable.maxsize = TUNING.STACK_SIZE_SMALLITEM
 
-	inst:AddComponent("perishable")
-	inst.components.perishable:SetPerishTime(TUNING.PERISH_SLOW)
-	inst.components.perishable:StartPerishing()
-	inst.components.perishable.onperishreplacement = "spoiled_food"
+    inst:AddComponent("perishable")
+    inst.components.perishable:SetPerishTime(TUNING.PERISH_SLOW)
+    inst.components.perishable:StartPerishing()
+    inst.components.perishable.onperishreplacement = "spoiled_food"
 
-	MakeSmallBurnable(inst)
-	MakeSmallPropagator(inst)
-	MakeHauntableLaunchAndPerish(inst)     
-	inst:AddComponent("bait")
-	inst:AddComponent("tradable")		
-	return inst
+    MakeSmallBurnable(inst)
+    MakeSmallPropagator(inst)
+    MakeHauntableLaunchAndPerish(inst)     
+    inst:AddComponent("bait")
+    inst:AddComponent("tradable")        
+    return inst
 end
 
 local function tomato_soupfn()
-	local inst = CreateEntity()
+    local inst = CreateEntity()
 
-	inst.entity:AddTransform()
-	inst.entity:AddAnimState()
-	inst.entity:AddNetwork()
+    inst.entity:AddTransform()
+    inst.entity:AddAnimState()
+    inst.entity:AddNetwork()
 
-	MakeInventoryPhysics(inst)
-	inst.AnimState:SetBuild("tomato_soup")
-	inst.AnimState:SetBank("tomato_soup")
-	inst.AnimState:PlayAnimation("idle", false)
+    MakeInventoryPhysics(inst)
+    inst.AnimState:SetBuild("tomato_soup")
+    inst.AnimState:SetBank("tomato_soup")
+    inst.AnimState:PlayAnimation("idle", false)
 
-	inst:AddTag("preparedfood")
-	MakeInventoryFloatable(inst, "small", 0.05, {1.2, 0.75, 1.2})
-	inst.entity:SetPristine()
+    inst:AddTag("preparedfood")
+    MakeInventoryFloatable(inst, "small", 0.05, {1.2, 0.75, 1.2})
+    inst.entity:SetPristine()
 
-	if not TheWorld.ismastersim then
-		return inst
-	end
+    if not TheWorld.ismastersim then
+        return inst
+    end
 
-	inst:AddComponent("edible")
-	inst.components.edible.healthvalue = 20
-	inst.components.edible.hungervalue = 30
-	inst.components.edible.foodtype = FOODTYPE.GENERIC
-	inst.components.edible.sanityvalue = 50
-	inst.components.edible:SetOnEatenFn(onEatTomatoSoup)
+    inst:AddComponent("edible")
+    inst.components.edible.healthvalue = 20
+    inst.components.edible.hungervalue = 30
+    inst.components.edible.foodtype = FOODTYPE.GENERIC
+    inst.components.edible.sanityvalue = 50
+    inst.components.edible:SetOnEatenFn(onEatTomatoSoup)
 
-	inst:AddComponent("inspectable")
-	
-	inst:AddComponent("inventoryitem")
-	inst.components.inventoryitem.atlasname = "images/inventoryimages/tomato_soup.xml"
+    inst:AddComponent("inspectable")
+    
+    inst:AddComponent("inventoryitem")
+    inst.components.inventoryitem.atlasname = "images/inventoryimages/tomato_soup.xml"
 
-	inst:AddComponent("stackable")
-	inst.components.stackable.maxsize = TUNING.STACK_SIZE_SMALLITEM
+    inst:AddComponent("stackable")
+    inst.components.stackable.maxsize = TUNING.STACK_SIZE_SMALLITEM
 
-	inst:AddComponent("perishable")
-	inst.components.perishable:SetPerishTime(TUNING.PERISH_MED)
-	inst.components.perishable:StartPerishing()
-	inst.components.perishable.onperishreplacement = "spoiled_food"
+    inst:AddComponent("perishable")
+    inst.components.perishable:SetPerishTime(TUNING.PERISH_MED)
+    inst.components.perishable:StartPerishing()
+    inst.components.perishable.onperishreplacement = "spoiled_food"
 
-	MakeSmallBurnable(inst)
-	MakeSmallPropagator(inst)
-	MakeHauntableLaunchAndPerish(inst)     
-	inst:AddComponent("bait")
-	inst:AddComponent("tradable")		
-	return inst
+    MakeSmallBurnable(inst)
+    MakeSmallPropagator(inst)
+    MakeHauntableLaunchAndPerish(inst)     
+    inst:AddComponent("bait")
+    inst:AddComponent("tradable")        
+    return inst
 end
 
 return

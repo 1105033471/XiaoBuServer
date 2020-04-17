@@ -90,6 +90,9 @@ local function onattack(inst, attacker, target)
 		end
 	elseif inst:HasTag("icebuff") then
 		local chance = math.random()
+        if target.components.health.maxhealth <= 200 then
+            chance = 1
+        end
 		if chance > 0.4 then		-- 60% 给与冰冻效果
 			local fx = SpawnPrefab("groundpoundring_fx")		-- 圆环扩散的特效
 			local pos = Vector3(target.Transform:GetWorldPosition())

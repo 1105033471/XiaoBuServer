@@ -1,5 +1,5 @@
-local _G = GLOBAL
-local require = _G.require
+GLOBAL.setmetatable(env,{__index=function(t,k) return GLOBAL.rawget(GLOBAL,k) end})
+
 
 local function AddTriple(taskset)
 	-- 地上为forest，地下为cave，还包括暴食活动quagmire和熔炉lavaarena

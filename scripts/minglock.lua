@@ -579,6 +579,7 @@ if IsServer then
         end
     end
 
+    --[[
     --防止玩家重置别人陷阱(狗牙)
     local old_RESETMINE = _G.ACTIONS.RESETMINE.fn
     _G.ACTIONS.RESETMINE.fn = function(act)
@@ -607,7 +608,9 @@ if IsServer then
 
         return old_RESETMINE(act)
     end
+    --]]
 
+    --[[
     --防砍别人家的树(圣诞树等)
     local old_CHOP = _G.ACTIONS.CHOP.fn
     _G.ACTIONS.CHOP.fn = function(act)
@@ -686,6 +689,7 @@ if IsServer then
 
         return old_CHOP(act)
     end
+    --]]
 
     --打开建筑容器函数
     local old_RUMMAGE = _G.ACTIONS.RUMMAGE.fn
