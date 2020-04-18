@@ -56,10 +56,10 @@ return {
       objects = {
         {
           name = "",
-          type = "carrot_planted",
+          type = "pugalisk_fountain",
           shape = "rectangle",
-          x = 64,
-          y = 128,
+          x = 256,
+          y = 256,
           width = 0,
           height = 0,
           visible = true,
