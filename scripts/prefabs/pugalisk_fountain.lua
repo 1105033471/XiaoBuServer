@@ -78,15 +78,7 @@ end
 local function getstatus(inst)
 	local state = inst.state
 	if state then
-		if state == "pre" then
-			return "PRE"
-		elseif state == "full" then
-			return "FULL"
-		elseif state == "pst" then
-			return "PST"
-		elseif state == "empty" then
-			return "EMPTY"
-		end
+		return string.upper(state)
 	end
 	return nil
 end

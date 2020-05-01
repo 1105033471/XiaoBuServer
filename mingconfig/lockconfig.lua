@@ -68,7 +68,7 @@ local configuration_options = {
             {description = "无权限控制", data = "010", hover = "木门任何玩家都能砸和打开，免疫怪物伤害"},
             {description = "关闭", data = "000", hover = "关闭"}
         },
-        default = "111"
+        default = "101"
     },
     {
         name = "fence_lock",
@@ -78,7 +78,7 @@ local configuration_options = {
             {description = "有权限控制2", data = "101", hover = "木栅栏有权限的玩家才能砸，怪物可摧毁"},
             {description = "关闭", data = "000", hover = "关闭"}
         },
-        default = "111"
+        default = "101"
     },
     {
         name = "wall_hay_lock",
@@ -88,7 +88,7 @@ local configuration_options = {
             {description = "有权限控制2", data = "101", hover = "草墙有权限的玩家才能砸，怪物可摧毁"},
             {description = "关闭", data = "000", hover = "关闭"}
         },
-        default = "111"
+        default = "101"
     },
     {
         name = "wall_wood_lock",
@@ -98,7 +98,7 @@ local configuration_options = {
             {description = "有权限控制2", data = "101", hover = "木墙有权限的玩家才能砸，怪物可摧毁"},
             {description = "关闭", data = "000", hover = "关闭"}
         },
-        default = "111"
+        default = "101"
     },
     {
         name = "wall_stone_lock",
@@ -108,7 +108,7 @@ local configuration_options = {
             {description = "有权限控制2", data = "101", hover = "石墙有权限的玩家才能砸，怪物可摧毁"},
             {description = "关闭", data = "000", hover = "关闭"}
         },
-        default = "111"
+        default = "101"
     },
     {
         name = "wall_ruins_lock",
@@ -200,7 +200,7 @@ local configuration_options = {
             {description = "1周", data = 604800}, 
             {description = "永远不解锁", data = "never"}
         },
-        default = 172800
+        default = "never"
     },
     {
         name = "spread_fire",

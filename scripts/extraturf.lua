@@ -1,6 +1,8 @@
 local assets = {
     Asset("IMAGE", "levels/textures/noise_pigruins.tex"),
     Asset("IMAGE", "levels/textures/mini_noise_pigruins.tex"),
+    Asset("IMAGE", "levels/textures/noise_beach.tex"),
+    Asset("IMAGE", "levels/textures/mini_noise_beach.tex"),
 }
 
 for _,v in pairs(assets) do

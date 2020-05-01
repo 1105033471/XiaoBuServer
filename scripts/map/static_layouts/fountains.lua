@@ -9,16 +9,16 @@ return {
   properties = {},
   tilesets = {
     {
-      name = "tiles",
+      name = "tiles",       --  TODO，什么意思     ground or tiles
       firstgid = 1,
-	  -- filename = "../../../../tools/tiled/dont_starve/ground.tsx",
+      filename = "../../../../tools/tiled/dont_starve/ground.tsx",
       tilewidth = 64,
       tileheight = 64,
       spacing = 0,
       margin = 0,
       image = "../../../../tools/tiled/dont_starve/tiles.png",
       imagewidth = 512,
-      imageheight = 256,
+      imageheight = 384,
       properties = {},
       tiles = {}
     }

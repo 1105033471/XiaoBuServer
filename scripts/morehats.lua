@@ -236,7 +236,7 @@ local function ValueCheck(inst)
 	
 	local old_onequipfn = inst.components.equippable.onequipfn
 	local function base_onequip(inst, owner, symbol_override)	-- base equip function
-		if inst.components.hatstatus.has_goggles == 1 and owner:GetSandstormLevel() >= TUNING.SANDSTORM_FULL_LEVEL and not owner.components.playervision:HasGoggleVision() then
+		if inst.components.hatstatus.has_goggles == 1 and owner:HasTag("player") and owner:GetSandstormLevel() >= TUNING.SANDSTORM_FULL_LEVEL and not owner.components.playervision:HasGoggleVision() then
 			inst:AddTag("goggles")						-- 添加沙漠护目镜buff
 		end
 		if inst.components.hatstatus.closebeefalo == 1 then								-- 亲牛

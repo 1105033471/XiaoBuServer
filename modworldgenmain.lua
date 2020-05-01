@@ -37,49 +37,8 @@ end
 -- 修改TaskSet的接口
 AddTaskSetPreInitAny(AddTriple)
 
-require("map/tasks")			-- 获取地图生成的相关模块
-local LAYOUTS = require("map/layouts").Layouts
-local STATICLAYOUT = require("map/static_layout")
-
-LAYOUTS["Fountains"] = STATICLAYOUT.Get("map/static_layouts/fountains")   --引用一种固定格式的地形，但是在哪调用呢？(在Room中)
-
-require("map/rooms/forest/rooms_fountains")   --引入一种room的文件，范围内随机分布
-
--- AddTaskPreInit("MoonIsland_Mine", function(task)    -- 将对应的room加入task中，出现这个task时就肯定有这个room出现
-    -- task.room_choices["FountainPatch"] = 1    -- 月岛矿区附近出现喷泉
-    -- task.room_choices["PlantPatch"] = 2        -- 植物群
--- end)
-
-AddTask("FountainIsland", {     -- 与其加进官方的task，不如自己做一个？
-    locks = {LOCKS.ISLAND_TIER2},
-    keys_given={KEYS.ISLAND_TIER3},
-    region_id = "fountain_island",
-    -- level_set_piece_blocker = true,
-    -- room_tags = {"RoadPoison", "moonhunt", "nohasslers", "lunacyarea", "not_mainland"},
-    room_tags = {"RoadPoison", "not_mainland"},     -- 没有这个，岛上会有Road
-    -- entrance_room = "MoonIsland_Blank",
-    room_choices =
-    {
-        -- ["MoonIsland_Beach"] = 2,
-        ["FountainPatch"] = 1,
-        ["PlantPatch"] = 2,
-    },
-    room_bg = GROUND.MUD,
-    background_room = "Blank",
-    cove_room_name = "Blank",
-    cove_room_chance = 1,
-    make_loop = false,
-    crosslink_factor = 1,
-    cove_room_max_edges = 2,
-    colour={r=0.6,g=0.6,b=0.0,a=1},
-})
-
-AddLevelPreInitAny(function(level)      -- 添加岛屿的代码啊啊！！！记笔记记笔记
-    if level.location ~= "forest" then  -- 不为地上则无动作
-        return
-    end
-    table.insert(level.tasks, "FountainIsland")     -- 将定义好的task加进地上的level中
-end)
+-- [[
+-- 官方的一些地板走路的声音文件地址，在AddTile里用到
 -- sounds names taken from base tile types in worldtiledefs.lua
 local sound_run_dirt = "dontstarve/movement/run_dirt"
 local sound_run_marsh = "dontstarve/movement/run_marsh"
@@ -136,13 +95,14 @@ local turfed_default = {        -- 地皮默认参数
 AddTile(        -- 添加地皮
     "PIGRUINS",           -- id, GROUND里的名字
     69,                     -- numerical_id 地皮编号
-    "pigruins",           -- name,地皮名字--levels/tiles/目录下的文件名？
+    "pigruins",           -- name,地皮名字
     {
-        name = "pigruins",    -- real_name, 这里可以覆盖上面的name(要和GROUND里的名字、图片名字一致，否则有问题)
+        name = "pigruins",    -- 地形边缘的样子，levels/tiles/pigruins.tex
         noise_texture = "levels/textures/noise_pigruins.tex",     -- 放置很多块地板的图片
         runsound = sound_run_tallgrass,                  -- run 的声音
         walksound = sound_walk_tallgrass,                -- walk 的声音
         snowsound = sound_snow,                     -- 有snow时走路的声音
+        mudsound = sound_run_mud,
         turfed = turfed_default,                    -- turf的基本属性
     },
     {
@@ -151,4 +111,102 @@ AddTile(        -- 添加地皮
     false           -- 是否为人造地板（人造地板不可种植）
 )
 
+AddTile(
+    "BEACH",
+    70,
+    "beach",
+    {
+        name = "beach",
+        noise_texture = "levels/textures/noise_beach.tex",
+        runsound = sound_run_dirt,
+        walksound = sound_walk_dirt,
+        snowsound = sound_ice,
+        mudsound = sound_run_mud,
+        turfed = turfed_default,
+    },
+    {
+        noise_texture = "levels/textures/mini_noise_beach.tex",
+    },
+    false           -- 是否为人造地板（人造地板不可种植）
+)
+
 ChangeTileTypeRenderOrder(GLOBAL.GROUND.WOODFLOOR, GLOBAL.GROUND.PIGRUINS)    -- 修改地皮的顺序，前面 < 后面
+
+-- SetTileTypeProperty(
+    -- GLOBAL.GROUND.WOODFLOOR,    -- id
+    -- "turfed",                   -- 修改的项，这里为基本属性
+    -- turfed_wood                 -- 属性值，上面定义的
+-- )     -- 修改原版的地皮属性，我觉得不是很有必要
+
+--]]
+
+require("map/tasks")            -- 获取地图生成的相关模块
+local LAYOUTS = require("map/layouts").Layouts
+local STATICLAYOUT = require("map/static_layout")
+
+LAYOUTS["Fountains"] = STATICLAYOUT.Get("map/static_layouts/fountains")   --引用一种固定格式的地形，但是在哪调用呢？(在Room中)
+
+require("map/rooms/forest/rooms_fountains")   --引入一些room，范围内随机分布
+
+-- AddTaskPreInit("MoonIsland_Mine", function(task)    -- 将对应的room加入task中，出现这个task时就肯定有这个room出现
+    -- task.room_choices["FountainPatch"] = 1    -- 月岛矿区附近出现喷泉
+    -- task.room_choices["PlantPatch"] = 2        -- 植物群
+-- end)
+
+-- [[
+AddTask("FountainIsland", {     -- 与其加进官方的task，不如自己做一个？
+    locks = {LOCKS.ISLAND_TIER2},
+    keys_given={KEYS.QUAGMIRE_GATEWAY},
+    region_id = "fountain_island",      -- 如果两个task的region_id相同，就会生成在一起
+    -- level_set_piece_blocker = true,
+    -- room_tags = {"RoadPoison", "moonhunt", "nohasslers", "lunacyarea", "not_mainland"},
+    room_tags = {"RoadPoison", "not_mainland"},     -- 没有这个"RoadPoison"，岛上会有Road; lunacyarea 是反精神值的tag
+    -- entrance_room = "MoonIsland_Blank",
+    room_choices =
+    {
+        -- ["MoonIsland_Beach"] = 2,
+        ["FountainPatch"] = 1,
+        ["PlantPatch"] = 4,
+    },
+    room_bg = GROUND.MUD,
+    background_room = "Blank",
+    cove_room_name = "Blank",
+    cove_room_chance = 1,
+    make_loop = false,
+    crosslink_factor = 1,
+    cove_room_max_edges = 2,
+    colour={r=0.6,g=0.6,b=0.0,a=1},
+})
+
+AddTask("SharkIsland", {                -- 虎鲨岛
+    locks = {LOCKS.ISLAND_TIER2},
+    keys_given={KEYS.ISLAND_TIER3},
+    region_id = "shark_island",
+    -- level_set_piece_blocker = true,
+    -- room_tags = {"RoadPoison", "moonhunt", "nohasslers", "lunacyarea", "not_mainland"},
+    room_tags = {"RoadPoison", "not_mainland", "poinsonLand"},
+    -- entrance_room = "MoonIsland_Blank",
+    room_choices =
+    {
+        -- ["MoonIsland_Beach"] = 2,
+        ["SharkPatch"] = 5,
+        ["TigerSharkPatch"] = 1,
+    },
+    room_bg = GROUND.BEACH,
+    background_room = "Blank",
+    cove_room_name = "Blank",
+    cove_room_chance = 1,
+    make_loop = false,
+    crosslink_factor = 1,
+    cove_room_max_edges = 2,
+    colour={r=0.2,g=0.4,b=0.8,a=0.6},
+})
+
+AddLevelPreInitAny(function(level)      -- 添加岛屿的代码啊啊！！！记笔记记笔记
+    if level.location ~= "forest" then  -- 不为地上则无动作
+        return
+    end
+    table.insert(level.tasks, "FountainIsland")     -- 将定义好的task加进地上的level中
+    table.insert(level.tasks, "SharkIsland")
+end)
+--]]
