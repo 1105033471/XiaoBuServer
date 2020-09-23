@@ -31,6 +31,12 @@ local function valuecheck(inst)
     local level = inst.components.chasethewindstatus.level + inst.components.chasethewindstatus.level2
     inst.components.weapon:SetDamage(27 + math.floor(level/5))
 
+    if inst.components.chasethewindstatus.level2 > 0 then
+        inst.components.equippable.walkspeedmult = 1.25
+    else
+        inst.components.equippable.walkspeedmult = 1.15
+    end
+    
     if inst.components.finiteuses then
         inst.components.finiteuses:SetMaxUses(200+level*5)
         inst.components.finiteuses:SetUses(inst.components.chasethewindstatus.use)
@@ -155,7 +161,6 @@ local function fn()
 	inst:AddComponent("equippable")
     inst.components.equippable:SetOnEquip( onequip )
     inst.components.equippable:SetOnUnequip( onunequip )
-	inst.components.equippable.walkspeedmult = 1.15
 
     inst:AddComponent("finiteuses")
     inst.components.finiteuses:SetMaxUses(200+inst.components.chasethewindstatus.level*5)

@@ -1,7 +1,10 @@
-local function getDistance(pt1, pt2)
-	local result = math.sqrt((pt1.x-pt2.x)*(pt1.x-pt2.x) + (pt1.z-pt2.z)*(pt1.z-pt2.z))	-- 计算绝对距离
-	return result
-end
+local ignore_prefab = {
+	-- "boat",
+	-- "boat_small",
+	-- "boat_large",
+	-- "boat_giant",
+	"walkingplank",
+}
 
 local function pointCanDeploy(inst, pt, mouseover)	-- 模拟原版能种植的判定
 	local tiletype = TheWorld.Map:GetTileAtPoint(pt.x, pt.y, pt.z)		-- 获取所在位置的地皮类型
@@ -18,14 +21,14 @@ local function pointCanDeploy(inst, pt, mouseover)	-- 模拟原版能种植的�
 	end
 	
     if ground_OK then	-- 如果地皮能种植，再判断附近物品			cant tags
-		local ents = TheSim:FindEntities(pt.x, pt.y, pt.z, 4, nil, {'NOBLOCK', 'player', 'FX'})
+		local ents = TheSim:FindEntities(pt.x, pt.y, pt.z, 4, nil, {"boat", 'NOBLOCK', 'player', 'FX'})
 		
 		local min_spacing = inst.replica.inventoryitem:DeploySpacingRadius()	-- 注意主客机
         
 		if min_spacing == 0 then min_spacing = 1 end		-- 默认距离
         for k, v in pairs(ents) do
-            if v ~= inst and v:IsValid() and v.entity:IsVisible() and not v.components.placer and v.parent == nil and v.prefab ~= "boat" then	-- 如果为船只则忽略
-                if getDistance( Vector3(v.Transform:GetWorldPosition()), pt) < min_spacing then
+            if v ~= inst and v:IsValid() and v.entity:IsVisible() and not v.components.placer and v.parent == nil and not table.contains(ignore_prefab, v.prefab) then	-- 如果为船只则忽略
+                if distsq(v:GetPosition(), pt) < min_spacing * min_spacing - 0.1 then
                     return false		-- 距离太近则无法种植
                 end
             end

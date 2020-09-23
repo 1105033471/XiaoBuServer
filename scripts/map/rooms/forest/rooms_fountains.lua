@@ -82,7 +82,7 @@ AddRoom("PlantPatch",
 AddRoom("SharkPatch", 
 {
 	colour = {r=.8,g=.2,b=.8,a=.50}, 
-	value = GROUND.QUAGMIRE_GATEWAY,
+	value = GROUND.BEACH,
 	-- tags = {"ExitPiece", "Chester_Eyebone"},
 	contents =  
 	{
@@ -123,7 +123,7 @@ AddRoom("SharkPatch",
 AddRoom("TigerSharkPatch", 
 {
 	colour = {r=.8,g=.2,b=.8,a=.50}, 
-	value = GROUND.QUAGMIRE_GATEWAY,
+	value = GROUND.BEACH,
 	-- tags = {"ExitPiece", "Chester_Eyebone"},
 	contents =  
 	{

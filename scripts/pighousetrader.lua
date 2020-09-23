@@ -17,20 +17,6 @@ for k, v in pairs(acceptPrefabs) do
 		end
 	end)
 end
---检验value是否在tb中
-local function InTable(tb, value)
-	if tb == nil then
-		return false
-	end
-		
-	for k, v in pairs(tb) do
-		if v == value then 
-			return true
-		end
-	end
-	
-	return false
-end
 
 AddPrefabPostInit("pighouse", function (inst)
 	if not GLOBAL.TheWorld.ismastersim then
@@ -41,7 +27,7 @@ AddPrefabPostInit("pighouse", function (inst)
 			return false
 		end
 		
-		if InTable(acceptPrefabs, item.prefab) then
+		if table.contains(acceptPrefabs, item.prefab) then
 			return true
 		end
 		
@@ -127,7 +113,7 @@ AddPrefabPostInit("pighouse", function (inst)
 		-- 20%给大便，同时生成1只蜘蛛
 		-- 20%给小肉，同时生成1只蜘蛛
 		-- 20%给月石
-		if InTable(itemList1, item.prefab) then
+		if table.contains(itemList1, item.prefab) then
 			--判定物品的随机数
 			local num = math.random(0,10)
 			---[[
@@ -160,7 +146,7 @@ AddPrefabPostInit("pighouse", function (inst)
 		-- 5%给多肉球茎
 		-- 5%给曼德拉草，同时生成1只暗影骑士
 		-- 1%给小偷包，同时生成1只钢羊spat
-		if InTable(itemList2, item.prefab) then
+		if table.contains(itemList2, item.prefab) then
 			local num = math.random(0, 100)
 			---[[
 			if num > 70 then
@@ -210,7 +196,7 @@ AddPrefabPostInit("pighouse", function (inst)
 		-- 6%给海象帽walrushat，同时生成1只暗影主教shadow_bishop
 		-- 6%给海象牙walrus_tusk，同时生成1只暗影战车shadow_rook
 		-- 5%给小偷包，同时生成1只钢羊spat
-		if InTable(itemList3, item.prefab) then
+		if table.contains(itemList3, item.prefab) then
 			local num = math.random(0, 100)
 			local monster_x = math.random(4,5)
 			local monster_y = math.random(4,5)

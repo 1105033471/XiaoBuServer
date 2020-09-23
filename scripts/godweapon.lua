@@ -1,28 +1,40 @@
-table.insert(PrefabFiles, "tz_icesword")
-table.insert(PrefabFiles, "chasethewind")
-table.insert(PrefabFiles, "oldfish_axe")
-table.insert(PrefabFiles, "phoenixspear")
-table.insert(PrefabFiles, "flyinghunter")
-table.insert(PrefabFiles, "tz_projectile")
-table.insert(PrefabFiles, "skinstaff")
+local prefabfiles = {
+    "tz_icesword",
+    "chasethewind",
+    "oldfish_axe",
+    "phoenixspear",
+    "flyinghunter",
+    "tz_projectile",
+    "skinstaff",
+    -- "killer",
 
-table.insert(PrefabFiles, "boss_heart")
-table.insert(PrefabFiles, "armor_obsidian")
-table.insert(PrefabFiles, "obsidian")
-table.insert(PrefabFiles, "obsidianfirepit")
-table.insert(PrefabFiles, "obsidianfirefire")
+    "boss_heart",
+    "armor_obsidian",
+    "obsidian",
+    "obsidianfirepit",
+    "obsidianfirefire",
+}
 
+local assets = {
+    Asset("ATLAS", "images/inventoryimages/skinstaff.xml"),
+    Asset("ATLAS", "images/inventoryimages/tz_icesword.xml"),
+    Asset("ATLAS", "images/inventoryimages/oldfish_axe.xml"),
+    Asset("ATLAS", "images/inventoryimages/chasethewind.xml"),
+    Asset("ATLAS", "images/inventoryimages/phoenixspear_ice.xml"),
+    Asset("ATLAS", "images/inventoryimages/phoenixspear_fire.xml"),
+    Asset("ATLAS", "images/inventoryimages/flyinghunter.xml"),
+    Asset("ATLAS", "images/inventoryimages/volcanoinventory.xml"),
+    Asset("ATLAS", "images/inventoryimages/armor_obsidian.xml"),
+    Asset("ATLAS", "images/inventoryimages/obsidian.xml"),
+}
 
-table.insert(Assets, Asset("ATLAS", "images/inventoryimages/skinstaff.xml"))
-table.insert(Assets, Asset("ATLAS", "images/inventoryimages/tz_icesword.xml"))
-table.insert(Assets, Asset("ATLAS", "images/inventoryimages/oldfish_axe.xml"))
-table.insert(Assets, Asset("ATLAS", "images/inventoryimages/chasethewind.xml"))
-table.insert(Assets, Asset("ATLAS", "images/inventoryimages/phoenixspear_ice.xml"))
-table.insert(Assets, Asset("ATLAS", "images/inventoryimages/phoenixspear_fire.xml"))
-table.insert(Assets, Asset("ATLAS", "images/inventoryimages/flyinghunter.xml"))
-table.insert(Assets, Asset("ATLAS", "images/inventoryimages/volcanoinventory.xml"))
-table.insert(Assets, Asset("ATLAS", "images/inventoryimages/armor_obsidian.xml"))
-table.insert(Assets, Asset("ATLAS", "images/inventoryimages/obsidian.xml"))
+for k,v in pairs(prefabfiles) do
+    table.insert(PrefabFiles, v)
+end
+
+for k,v in pairs(assets) do
+    table.insert(Assets, v)
+end
 
 -- 逐风之刃
 AddRecipe("chasethewind",
@@ -46,13 +58,12 @@ AddRecipe("chasethewind",
 -- 皮肤法杖
 AddRecipe("skinstaff",
     {
-        Ingredient("greengem", 2),
-        Ingredient("bluegem", 2),
+        Ingredient("greengem", 1),
         Ingredient("opalpreciousgem", 1),
         Ingredient("feather_robin", 4)
     },
     RECIPETABS.WAR,
-    TECH.MAGIC_THREE, 
+    TECH.MAGIC_THREE,
     nil, --placer
     nil, -- min_spacing
     nil, -- nounlock
@@ -60,22 +71,6 @@ AddRecipe("skinstaff",
     nil, -- builder_tag
     "images/inventoryimages/skinstaff.xml", -- atlas
     "skinstaff.tex"                         -- image
-)
-
--- 花
-AddRecipe("flower",
-    {
-        Ingredient("butterfly", 1)
-    },
-    nil,
-    TECH.LOST, 
-    nil, --placer
-    nil, -- min_spacing
-    nil, -- nounlock
-    nil, -- numtogive
-    nil, -- builder_tag
-    nil, -- atlas
-    nil  -- image
 )
 
 -- 红宝石

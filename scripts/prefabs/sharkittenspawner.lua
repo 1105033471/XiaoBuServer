@@ -18,17 +18,33 @@ local function ReturnChildren(inst)
     end
 end
 
-local function SummonShark(inst)
-    --Try to spawn a shark to protect this area if it's spring.
-    if inst.spawneractive then
-        local tigersharker = getWorldPrefab().components.tigersharker
+local function GetNearbySpawnPoint(target)
+    local properties = {target:GetPosition(), 0, 40, 12}
 
-        local shark = tigersharker:SpawnShark(true, false)
+    -- local offset = FindWaterOffset(unpack(properties))
+
+    -- if not offset then
+    local offset = FindWalkableOffset(unpack(properties))
+    -- end
+
+    return (offset and target:GetPosition() + offset) or nil
+end
+
+local function SummonShark(inst, doer)
+    --Try to spawn a shark to protect this area.
+    if TheWorld.ismastersim then
+        local tigershark = c_findnext("tigershark")
+        if tigershark ~= nil then          -- 当世界中存在虎鲨时，忽略召唤
+            tigershark.components.combat:SuggestTarget(doer)
+            return
+        end
+
+        local shark = SpawnPrefab("tigershark")
         if shark then
-            local spawnpt = tigersharker:GetNearbySpawnPoint(GetPlayer())
+            local spawnpt = GetNearbySpawnPoint(doer)
             if spawnpt then
                 shark.Transform:SetPosition(spawnpt:Get())
-                shark.components.combat:SuggestTarget(GetPlayer())
+                shark.components.combat:SuggestTarget(doer)
             end
         end
     end
@@ -51,9 +67,9 @@ local function OnIsDay(inst, isday)
     end
 end
 
-local function ActivateSpawner(inst, isload)
-    if not inst.spawneractive then
-        inst.spawneractive = true
+local function ActivateSpawner(inst)
+    -- if not inst.spawneractive then
+        -- inst.spawneractive = true
             --inst.components.named:SetName(STRINGS.NAMES["SHARKITTENSPAWNER_ACTIVE"])
             --Queue up an animation change for next time this is off screen
 
@@ -68,36 +84,36 @@ local function ActivateSpawner(inst, isload)
             end)
     
             --inst:WatchWorldState("dusktime", inst.dusktime_fn, GetWorld())
-            inst:WatchWorldState("iscaveday", OnIsDay)
+            -- inst:WatchWorldState("iscaveday", OnIsDay)
         end
 
-        if isload then
-            inst.activatefn()
-        end
-    end
+        -- if isload then
+        inst.activatefn()
+        -- end
+    -- end
 end
 
-local function DeactiveateSpawner(inst, isload)
-    if inst.spawneractive then
-        inst.spawneractive = false
-        --inst.components.named:SetName(STRINGS.NAMES["SHARKITTENSPAWNER_INACTIVE"])
-        inst.deactivatefn = function()
-            --Queue up an animation change for the next time this is off screen
-            inst.AnimState:PlayAnimation("idle_inactive")
-            --Start task to periodically blink if there are children inside
-            if inst.blink_task then
-                inst.blink_task:Cancel()
-                inst.blink_task = nil
-            end
+-- local function DeactiveateSpawner(inst, isload)
+--     if inst.spawneractive then
+--         inst.spawneractive = false
+--         --inst.components.named:SetName(STRINGS.NAMES["SHARKITTENSPAWNER_INACTIVE"])
+--         inst.deactivatefn = function()
+--             --Queue up an animation change for the next time this is off screen
+--             inst.AnimState:PlayAnimation("idle_inactive")
+--             --Start task to periodically blink if there are children inside
+--             if inst.blink_task then
+--                 inst.blink_task:Cancel()
+--                 inst.blink_task = nil
+--             end
 
-            inst:StopWatchingWorldState("iscaveday", OnIsDay)
-        end
+--             inst:StopWatchingWorldState("iscaveday", OnIsDay)
+--         end
 
-        if isload then
-            inst.deactivatefn()
-        end
-    end
-end
+--         if isload then
+--             inst.deactivatefn()
+--         end
+--     end
+-- end
 
 -- local function OnSeasonChange(inst, world, data)
 --     if data.season == SEASONS.GREEN then
@@ -109,20 +125,20 @@ end
 --     end
 -- end
 
-local function getstatus(inst)
-    if not inst.spawneractive then 
-        return "INACTIVE"
-    end
-end
+-- local function getstatus(inst)
+--     if not inst.spawneractive then 
+--         return "INACTIVE"
+--     end
+-- end
 
 local function OnSave(inst, data)
-    data.spawneractive = inst.spawneractive
+    -- data.spawneractive = inst.spawneractive
 end
 
 local function OnLoad(inst, data)
-    if data and data.spawneractive then
-        inst.spawneractive = data.spawneractive
-    end
+    -- if data and data.spawneractive then
+    --     inst.spawneractive = data.spawneractive
+    -- end
     -- if data and data.spawneractive then
     --     ActivateSpawner(inst, true)
     -- else
@@ -178,7 +194,7 @@ local function fn()
 
     --inst:ListenForEvent("seasonChange", function(...) OnSeasonChange(inst, ...) end, GetWorld())
     inst:WatchWorldState("iscaveday", OnIsDay)
-    ActivateSpawner(inst, true)
+    ActivateSpawner(inst)
     inst.components.childspawner:StartSpawning()
 
 	return inst

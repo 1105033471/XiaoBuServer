@@ -78,9 +78,41 @@ local function HomeOffset(inst)
     end
 end
 
+-- 继承父类Brain
 local SharkittenBrain = Class(Brain, function(self, inst)
     Brain._ctor(self, inst)
 end)
+
+-- 这里的返回不是visit节点后的返回值，只是设置visit该节点后，该节点的状态
+-- BT(inst, root) 行为树 root为行为树的根节点
+-- BehaviourNode(name, children) 行为节点 是所有节点以及行为的父类，通常不会直接出现在brain中 children为当前节点的子节点集
+    -- DecoratorNode(name, child) 装饰节点 装饰节点带有1个子节点，通常用来对子节点的值做一定的变换，分为以下三种：
+        -- NotDecorator(child) 返回子节点运行结果的非，如子节点运行结果为SUCCESS，则返回FAIL，子节点运行结果为RUNING则返回RUNING
+        -- FailIfRunningDecorator(child) 如果子节点返回RUNING，则返回FAIL，否则返回子节点运行结果
+        -- FailIfSuccessDecorator(child) 如果子节点返回SUCCESS，则返回FAIL，否则返回子节点运行结果
+    -- ConditionNode(fn, name) 条件节点 如果fn()条件满足，则返回SUCCESS，否则返回FAIL
+    -- ConditionWaitNode(fn, name) 条件满足等待节点 如果fn()条件满足，则返回SUCCESS，否则返回RUNING
+    -- ActionNode(action, name) 动作节点 执行指定的动作后，返回SUCCESS
+    -- WaitNode(time) 等待节点 等待指定的延迟后，返回SUCCESS，等待中返回RUNING
+    -- SequenceNode(children) 序列节点 依次执行所有的子节点，直到第一个没有SUCCESS的子节点，如果子节点执行结果为FAIL，则下次Visit从头开始
+    -- SelectorNode(children) 选择节点 依次执行所有的子节点，如果某一子节点返回不是FAIL，则返回该子节点状态
+    -- LoopNode(children, maxreps) 循环节点 依次执行所有的子节点，每一次visit，如果有子节点返回FAIL，则从头开始，如果有子节点返回RUNING则返回RUNING，如果所有子节点
+                                    -- 都返回SUCCESS，则循环计数+1，如果有设置最大循环次数并且当前循环次数超过最大值，则返回SUCCESS，否则重置所有子节点
+                                    -- 循环节点和序列节点有点类似，只是多了个循环计数
+    -- RandomNode(children) 随机访问节点 随机从一个子节点开始按顺序访问所有子节点，如果所有子节点都返回FAIL则返回FAIL，否则返回
+    -- PriorityNode(children, period, noscatter) 优先度节点，通常作为一棵行为树的根节点，children为子节点集，period为优先度
+                                    -- TODO
+    -- ParallelNode(child, name) 并行节点 同时执行所有子节点，如果都执行完毕返回SUCCESS，否则返回RUNING
+        -- ParallelNodeAny(child) 并行节点 同时执行所有子节点，如果有一个子节点执行完毕则返回SUCCESS，否则返回RUNING
+    -- EventNode(inst, event, child, priority) 事件节点 监听到对应事件后执行子节点
+    -- LatchNode = （inst, latchduration, child)
+-- WhileNode(cond, name, node)
+-- IfNode(cond, name, node)
+
+-- behaviours(行为) 行为是作为行为树的叶子节点，同样继承于BehaviourNode
+-- AttackWall(inst) 攻击面前的墙体
+-- AvoidLight(inst) 暂时没有东西用到，可能是废弃了。。。
+
 
 function SharkittenBrain:OnStart()
     local root =

@@ -1,10 +1,4 @@
-local TheNet = GLOBAL.TheNet
-
-local IsServer = TheNet:GetIsServer() or TheNet:IsDedicated()
-
-local TUNING = GLOBAL.TUNING
-
-if IsServer then
+if TheNet:GetIsServer() or TheNet:IsDedicated() then
     -- 需要清理的物品
     -- @max        地图上存在的最大数量
     -- @stack      标识为true时表示仅清理无堆叠的物品
@@ -12,104 +6,140 @@ if IsServer then
     local function GetLevelPrefabs()
         local levelPrefabs = {
             ------------------------  生物  ------------------------
-            hound           = { max = 30 },    -- 狗
-            firehound       = { max = 10 },    -- 火狗
-            spider_warrior  = { max = 10 },    -- 蜘蛛战士
+            hound           = { max = 10 },    -- 狗
+            firehound       = { max = 5 },    -- 火狗
+            spider_warrior  = { max = 5 },    -- 蜘蛛战士
             spider          = { max = 10 },    -- 蜘蛛
             flies           = { max = 10 },    -- 苍蝇
             mosquito        = { max = 10 },    -- 蚊子
             bee             = { max = 10 },    -- 蜜蜂
             killerbee       = { max = 10 },    -- 杀人蜂
-            frog            = { max = 20 },    -- 青蛙
+            frog            = { max = 10 },    -- 青蛙
             beefalo         = { max = 90 },   -- 牛
             grassgekko      = { max = 15 },   -- 草蜥蜴
             lightninggoat   = { max = 25 },    -- 羊
             deer            = { max = 10 },   -- 鹿
-            bunnyman        = { max = 10 },    -- 兔人
+            bunnyman        = { max = 5 },    -- 兔人
             slurtle         = { max = 5 },     -- 鼻涕虫
             snurtle         = { max = 5 },     -- 蜗牛
 
             ------------------------  地面物体  ------------------------
-            evergreen_sparse    = { max = 250 },                      -- 常青树
-            twiggytree          = { max = 150 },                      -- 树枝树
-            marsh_tree          = { max = 100 },                      -- 针刺树
-            rock_petrified_tree = { max = 400 },                      -- 石化树
-            skeleton_player     = { max = 50 },                       -- 玩家尸体
-            spiderden           = { max = 50 },                       -- 蜘蛛巢
-            burntground         = { max = 50 },                       -- 陨石痕跡
+            evergreen_sparse    = { max = 200, reclean = 2 },                        -- 常青树
+            twiggytree          = { max = 100, reclean = 2 },                        -- 树枝树
+            marsh_tree          = { max = 30, reclean = 2 },                         -- 针刺树
+            rock_petrified_tree = { max = 200, reclean = 2 },                        -- 石化树
+            -- skeleton_player     = { max = 10, reclean = 2 },                         -- 玩家尸体
+            spiderden           = { max = 30, reclean = 2 },                         -- 蜘蛛巢
+            burntground         = { max = 20, reclean = 2 },                         -- 陨石痕跡
 
             ------------------------  可拾取物品  ------------------------
-            seeds           = { max = 10, stack = true, reclean = 3 },                -- 种子
-            log             = { max = 100, stack = true, reclean = 3 },       -- 木头
-            pinecone        = { max = 80, stack = false, reclean = 3 },       -- 松果
-            cutgrass        = { max = 100, stack = true, reclean = 3 },       -- 草
-            twigs           = { max = 100, stack = true, reclean = 3 },       -- 树枝
-            rocks           = { max = 100, stack = true, reclean = 3 },       -- 石头
-            nitre           = { max = 100, stack = true, reclean = 3 },       -- 硝石
-            flint           = { max = 100, stack = true, reclean = 3 },       -- 燧石
-            poop            = { max = 70 , stack = true, reclean = 3 },       -- 屎
-            guano           = { max = 5 , stack = true, reclean = 3 },       -- 鸟屎
-			charcoal		= { max = 40 , stack = false, reclean = 3 },       -- 木炭
-            manrabbit_tail  = { max = 70 , stack = true, reclean = 3 },       -- 兔毛
-            silk            = { max = 40 , stack = false, reclean = 3 },       -- 蜘蛛丝
-            spidergland     = { max = 40 , stack = false, reclean = 3 },       -- 蜘蛛腺体
-            stinger         = { max = 5 , stack = false, reclean = 3 },       -- 蜂刺
-            houndstooth     = { max = 30 , stack = false, reclean = 3 },       -- 狗牙
-            mosquitosack    = { max = 80 , stack = true, reclean = 3 },       -- 蚊子血袋
-            glommerfuel     = { max = 80 , stack = true, reclean = 3 },       -- 格罗姆粘液
-            slurtleslime    = { max = 6 , stack = true, reclean = 3 },       -- 鼻涕虫粘液
-            slurtle_shellpieces = { max = 40, stack = true, reclean = 3 },   -- 鼻涕虫壳碎片
+            seeds           = { max = 10, stack = false, reclean = 3 },         -- 种子
+            log             = { max = 40, stack = false, reclean = 3 },         -- 木头
+            pinecone        = { max = 10, stack = false, reclean = 3 },         -- 松果
+            cutgrass        = { max = 30, stack = false, reclean = 3 },         -- 草
+            cutreeds        = { max = 20, stack = false, reclean = 2 },         -- 芦苇
+            twigs           = { max = 30, stack = false, reclean = 3 },         -- 树枝
+            rocks           = { max = 30, stack = false, reclean = 3 },         -- 石头
+            nitre           = { max = 30, stack = false, reclean = 3 },         -- 硝石
+            flint           = { max = 30, stack = false, reclean = 3 },         -- 燧石
+            poop            = { max = 20 , stack = false, reclean = 3 },        -- 屎
+            guano           = { max = 5 , stack = false, reclean = 3 },         -- 鸟屎
+            charcoal        = { max = 40 , stack = false, reclean = 3 },        -- 木炭
+            manrabbit_tail  = { max = 20 , stack = false, reclean = 3 },        -- 兔毛
+            silk            = { max = 40 , stack = false, reclean = 3 },        -- 蜘蛛丝
+            spidergland     = { max = 40 , stack = false, reclean = 3 },        -- 蜘蛛腺体
+            stinger         = { max = 5 , stack = false, reclean = 3 },         -- 蜂刺
+            houndstooth     = { max = 30 , stack = false, reclean = 3 },        -- 狗牙
+            mosquitosack    = { max = 20 , stack = false, reclean = 3 },        -- 蚊子血袋
+            glommerfuel     = { max = 20 , stack = false, reclean = 3 },        -- 格罗姆粘液
+            slurtleslime    = { max = 6 , stack = false, reclean = 3 },         -- 鼻涕虫粘液
+            slurtle_shellpieces = { max = 20, stack = false, reclean = 3 },     -- 鼻涕虫壳碎片
+            lucky_goldnugget = { max = 20, stack = false, reclean = 3 },        -- 金元宝
+            goose_feather = { max = 10, stack = false, reclean = 2 },                        -- 鹅毛
+            feather_robin = { max = 5, stack = false, reclean = 2 },                         -- 红羽毛
+            feather_canary = { max = 5, reclean = 2 },                                       -- 金羽毛
+            spoiled_fish_small = { max = 3, reclean = 2 },                                   -- 腐烂的小鱼
+            oar = { max = 3, reclean = 2 },                                                  -- 浆
+            lureplantbulb = { max = 3, reclean = 2 },                                        -- 食人花
+            redgem = { max = 10, reclean = 2 },                                              -- 红宝石
+            bulegem = { max = 10, reclean = 2 },                                             -- 蓝宝石
+            amulet = { max = 5, reclean = 2 },                                               -- 生命护符
+            giftwrap = { max = 3, reclean = 2 },                                             -- 礼物包裹
+            armorwood = { max = 3, reclean = 2 },                                            -- 木甲
+            phlegm = { max = 3, stack = false, reclean = 2 },                                -- 钢羊痰
+            rope = { max = 3, reclean = 2 },                                                 -- 绳子
+            shroom_skin = { max = 3, reclean = 2 },                                          -- 蘑菇皮
+            tentaclespots = { max = 3, reclean = 2 },                                        -- 触手皮
+            sewing_kit = { max = 3, reclean = 2 },                                           -- 缝纫包
+            nightmarefuel = { max = 3, reclean = 2 },                                        -- 噩梦燃料
+            livinglog = { max = 3, reclean = 2 },                                            -- 活木
+            waxpaper = { max = 3, reclean = 2 },                                             -- 蜡纸
+            coontail = { max = 3, reclean = 2 },                                             -- 猫尾巴
+            
 
-            spoiled_food    = { max = 10 },                                  -- 腐烂食物
-            winter_food4    = { max = 2, stack = true, reclean = 3 },        -- 维多利亚面包
+            --------------------------  食物   ------------------------------(最后都变成腐烂食物)
+            -- cave_banana = { max = 3 },      -- 洞穴香蕉
 
-            winter_ornament_plain1 = { max = 2, stack = true, reclean = 3 }, -- 节日小饰品
-            winter_ornament_plain2 = { max = 2, stack = true, reclean = 3 },
-            winter_ornament_plain4 = { max = 2, stack = true, reclean = 3 },
-            winter_ornament_plain5 = { max = 2, stack = true, reclean = 3 },
-            winter_ornament_plain6 = { max = 2, stack = true, reclean = 3 },
-            winter_ornament_plain7 = { max = 2, stack = true, reclean = 3 },
-            winter_ornament_plain8 = { max = 2, stack = true, reclean = 3 },
+            spoiled_food    = { max = 10, reclean = 2 },                                  -- 腐烂食物
+            winter_food1    = { max = 2, reclean = 2 },        -- 维多利亚面包
+            winter_food2    = { max = 2, reclean = 2 },        -- 维多利亚面包
+            winter_food3    = { max = 2, reclean = 2 },        -- 维多利亚面包
+            winter_food4    = { max = 2, reclean = 2 },        -- 维多利亚面包
+            winter_food5    = { max = 2, reclean = 2 },        -- 维多利亚面包
+            winter_food6    = { max = 2, reclean = 2 },        -- 维多利亚面包
+            winter_food7    = { max = 2, reclean = 2 },        -- 维多利亚面包
+            winter_food8    = { max = 2, reclean = 2 },        -- 维多利亚面包
 
-            trinket_3   = { max = 2, stack = true, reclean = 3 },            -- 戈尔迪乌姆之结
-            trinket_4   = { max = 2, stack = true, reclean = 3 },
-            trinket_6   = { max = 2, stack = true, reclean = 3 },
-            trinket_8   = { max = 2, stack = true, reclean = 3 },
+            winter_ornament_plain1 = { max = 2, stack = true, reclean = 2 }, -- 节日小饰品
+            winter_ornament_plain2 = { max = 2, stack = true, reclean = 2 },
+            winter_ornament_plain4 = { max = 2, stack = true, reclean = 2 },
+            winter_ornament_plain5 = { max = 2, stack = true, reclean = 2 },
+            winter_ornament_plain6 = { max = 2, stack = true, reclean = 2 },
+            winter_ornament_plain7 = { max = 2, stack = true, reclean = 2 },
+            winter_ornament_plain8 = { max = 2, stack = true, reclean = 2 },
 
-            blueprint   = { max = 3 },    -- 蓝图
-            axe         = { max = 3 },    -- 斧子
-            torch       = { max = 3 },    -- 火炬
-            pickaxe     = { max = 3 },    -- 镐子
-            hammer      = { max = 3 },    -- 锤子
-            shovel      = { max = 3 },    -- 铲子
-			tentaclespike = {max = 3},	  -- 触手棒
-            razor       = { max = 3 },    -- 剃刀
-            pitchfork   = { max = 3 },    -- 草叉
-            bugnet      = { max = 3 },    -- 捕虫网
-            fishingrod  = { max = 3 },    -- 鱼竿
-            spear       = { max = 3 },    -- 矛
-            earmuffshat = { max = 3 },    -- 兔耳罩
-            winterhat   = { max = 3 },    -- 冬帽
-			spiderhat	= { max = 10 },   -- 蜘蛛帽
-            heatrock    = { max = 3 },    -- 热能石
-            trap        = { max = 30 },   -- 动物陷阱
-            birdtrap    = { max = 30 },   -- 鸟陷阱
-            compass     = { max = 3 },    -- 指南針
+            trinket_3   = { max = 2, stack = true, reclean = 2 },            -- 戈尔迪乌姆之结
+            trinket_4   = { max = 2, stack = true, reclean = 2 },
+            trinket_6   = { max = 2, stack = true, reclean = 2 },
+            trinket_8   = { max = 2, stack = true, reclean = 2 },
 
-            chesspiece_deerclops_sketch     = { max = 2 },    -- 四季 boss 棋子图
-            chesspiece_bearger_sketch       = { max = 2 },
-            chesspiece_moosegoose_sketch    = { max = 2 },
-            chesspiece_dragonfly_sketch     = { max = 2 },
+            blueprint   = { max = 3, reclean = 2 },    -- 蓝图
+            axe         = { max = 3, reclean = 2 },    -- 斧子
+            torch       = { max = 3, reclean = 2 },    -- 火炬
+            pickaxe     = { max = 3, reclean = 2 },    -- 镐子
+            hammer      = { max = 3, reclean = 2 },    -- 锤子
+            shovel      = { max = 3, reclean = 2 },    -- 铲子
+            tentaclespike = { max = 3, reclean = 2 },      -- 触手棒
+            razor       = { max = 3, reclean = 2 },    -- 剃刀
+            pitchfork   = { max = 3, reclean = 2 },    -- 草叉
+            bugnet      = { max = 3, reclean = 2 },    -- 捕虫网
+            fishingrod  = { max = 3, reclean = 2 },    -- 鱼竿
+            spear       = { max = 3, reclean = 2 },    -- 矛
+            earmuffshat = { max = 3, reclean = 2 },    -- 兔耳罩
+            winterhat   = { max = 3, reclean = 2 },    -- 冬帽
+            spiderhat    = { max = 10, reclean = 2 },   -- 蜘蛛帽
+            heatrock    = { max = 3, reclean = 2 },    -- 热能石
+            trap        = { max = 10 },   -- 动物陷阱
+            birdtrap    = { max = 5, reclean = 2 },   -- 鸟陷阱
+            compass     = { max = 3, reclean = 2 },    -- 指南針
+            wathgrithrhat = { max = 3, reclean = 2 },    -- 女武神帽子
+            icestaff = { max = 3, reclean = 2 },         -- 冰杖
 
-            winter_ornament_boss_bearger    = { max = 2, stack = true, reclean = 3 },    -- 四季 boss 和蛤蟆、蜂后的挂饰
-            winter_ornament_boss_beequeen   = { max = 2, stack = true, reclean = 3 },
-            winter_ornament_boss_deerclops  = { max = 2, stack = true, reclean = 3 },
-            winter_ornament_boss_dragonfly  = { max = 2, stack = true, reclean = 3 },
-            winter_ornament_boss_moose      = { max = 2, stack = true, reclean = 3 },
-            winter_ornament_boss_toadstool  = { max = 2, stack = true, reclean = 3 },
 
-            armor_sanity   = { max = 3 },    -- 影甲
-            -- shadowheart    = { max = 3 },    -- 影心
+            chesspiece_deerclops_sketch     = { max = 2, reclean = 2 },    -- 四季 boss 棋子图
+            chesspiece_bearger_sketch       = { max = 2, reclean = 2 },
+            chesspiece_moosegoose_sketch    = { max = 2, reclean = 2 },
+            chesspiece_dragonfly_sketch     = { max = 2, reclean = 2 },
+
+            winter_ornament_boss_bearger    = { max = 2, stack = true, reclean = 2 },    -- 四季 boss 和蛤蟆、蜂后的挂饰
+            winter_ornament_boss_beequeen   = { max = 2, stack = true, reclean = 2 },
+            winter_ornament_boss_deerclops  = { max = 2, stack = true, reclean = 2 },
+            winter_ornament_boss_dragonfly  = { max = 2, stack = true, reclean = 2 },
+            winter_ornament_boss_moose      = { max = 2, stack = true, reclean = 2 },
+            winter_ornament_boss_toadstool  = { max = 2, stack = true, reclean = 2 },
+
+            -- armor_sanity   = { max = 3, reclean = 2  },    -- 影甲
+            -- shadowheart    = { max = 3, reclean = 2 },    -- 影心
         }
 
         return levelPrefabs
@@ -126,13 +156,13 @@ if IsServer then
         end
     end
 
-    local function Clean(inst, level)
+    local function Clean(inst)
         TheNet:Announce("正在自动清理垃圾")
         print("开始清理...")
         local this_max_prefabs = GetLevelPrefabs()
         local countList = {}
 
-        for _,v in pairs(GLOBAL.Ents) do
+        for _,v in pairs(Ents) do
             if v.prefab ~= nil then
                 repeat
                     local thisPrefab = v.prefab
@@ -149,15 +179,15 @@ if IsServer then
                         end
 
                         if this_max_prefabs[thisPrefab].stack and 
-						   bNotClean and 
-						   v.components and 
-						   v.components.stackable and 
-						   v.components.stackable:StackSize() > 1 then 
-								break 
-						end
+                           bNotClean and 
+                           v.components and 
+                           v.components.stackable and 
+                           v.components.stackable:StackSize() > 1 then 
+                                break 
+                        end
                     else 
-						break
-					end
+                        break
+                    end
 
                     -- 不可见物品(在包裹内等)
                     if v.inlimbo then break end
@@ -189,11 +219,11 @@ if IsServer then
     end
 
     local function CleanDelay(inst)
-		TheNet:Announce("服务器将于 30 秒后清理！")
-		inst:DoTaskInTime(30, Clean)
+        TheNet:Announce("服务器将于 30 秒后清理！")
+        inst:DoTaskInTime(30, Clean)
     end
 
     AddPrefabPostInit("world", function(inst)
-        inst:DoPeriodicTask(10 * TUNING.TOTAL_DAY_TIME, CleanDelay)	-- 周期性清理物品
+        inst:DoPeriodicTask(5 * TUNING.TOTAL_DAY_TIME, CleanDelay)    -- 周期性清理物品
     end)
 end

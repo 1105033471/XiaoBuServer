@@ -8,7 +8,6 @@ table.insert(Assets, Asset("IMAGE", "images/back.tex"))
 table.insert(Assets, Asset("ATLAS", "images/back.xml"))
 table.insert(Assets, Asset("IMAGE", "images/neck.tex"))
 table.insert(Assets, Asset("ATLAS", "images/neck.xml"))
--- for key,value in pairs(GLOBAL.EQUIPSLOTS) do print('4r',key,value) end
 
 GLOBAL.EQUIPSLOTS=
 {
@@ -229,5 +228,3 @@ AddPrefabPostInit("candybag", backpackpostinit)
 AddPrefabPostInit("thatchpack", backpackpostinit)
 AddPrefabPostInit("spicepack", backpackpostinit)
 AddPrefabPostInit("piratepack", backpackpostinit)
---AddPrefabPostInit("seasack", backpackpostinit)
-

@@ -1,5 +1,8 @@
 GLOBAL.setmetatable(env,{__index=function(t,k) return GLOBAL.rawget(GLOBAL,k) end})
 
+-- 设置随机数种子
+math.randomseed(tostring(os.time()):reverse():sub(1, 7))
+
 modimport("tile_adder.lua")
 --[[
     上面的文件是从Turfed(514078314)里copy过来的，因为作者封装了一些非常不错的接口

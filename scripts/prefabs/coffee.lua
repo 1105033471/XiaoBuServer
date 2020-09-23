@@ -25,8 +25,8 @@ local function StartCaffeineFn(inst, eater)
 end
 
 local function onEatTomatoSoup(inst, eater)
-	local flower = SpawnPrefab(math.random() > 0.95 and "flower_rose" or "flower")
 	if eater and eater.components and eater.components.talker then
+        local flower = SpawnPrefab(math.random() > 0.95 and "flower_rose" or "flower")
 		eater.components.talker:Say("美好的一天从这道美味开始！")
 		flower.Transform:SetPosition(eater.Transform:GetWorldPosition())
 	end
@@ -157,7 +157,7 @@ local function tomato_soupfn()
     inst:AddComponent("edible")
     inst.components.edible.healthvalue = 20
     inst.components.edible.hungervalue = 30
-    inst.components.edible.foodtype = FOODTYPE.GENERIC
+    inst.components.edible.foodtype = FOODTYPE.GOODIES
     inst.components.edible.sanityvalue = 50
     inst.components.edible:SetOnEatenFn(onEatTomatoSoup)
 
@@ -176,7 +176,7 @@ local function tomato_soupfn()
 
     MakeSmallBurnable(inst)
     MakeSmallPropagator(inst)
-    MakeHauntableLaunchAndPerish(inst)     
+    MakeHauntableLaunchAndPerish(inst)
     inst:AddComponent("bait")
     inst:AddComponent("tradable")        
     return inst

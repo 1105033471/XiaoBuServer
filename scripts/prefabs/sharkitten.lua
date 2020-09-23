@@ -93,6 +93,7 @@ local function kittenfn()
 	inst.entity:AddTransform()
 	inst.entity:AddAnimState()
     inst.entity:AddPhysics()
+    inst.entity:AddNetwork()
 	inst.entity:AddSoundEmitter()
 	inst.entity:AddDynamicShadow()
 
@@ -158,8 +159,8 @@ local function kittenfn()
     inst:SetStateGraph("SGsharkitten")
 
     MakeCharacterPhysics(inst, 10, .5)
-    MakeSmallBurnable(inst)
-    MakeSmallPropagator(inst)
+    -- MakeSmallBurnable(inst)
+    -- MakeSmallPropagator(inst)
     
     inst.OnLongUpdate = grow
 

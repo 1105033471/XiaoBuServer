@@ -30,14 +30,14 @@ local function coffeebeansfn()
 		return inst
 	end
 
-	inst:AddComponent("inspectable")
 	inst:AddComponent("edible")
 	inst.components.edible.healthvalue = 1
-	inst.components.edible.hungervalue = 1
-	inst.components.edible.sanityvalue = 1
-
+	inst.components.edible.hungervalue = 12.5
+	inst.components.edible.sanityvalue = 0
 	inst.components.edible.foodtype = FOODTYPE.GENERIC
 	
+	inst:AddComponent("inspectable")
+
 	inst:AddComponent("inventoryitem")
 	inst.components.inventoryitem.imagename = "coffeebeans"
 	inst.components.inventoryitem.atlasname = "images/inventoryimages/coffeebeans.xml"
@@ -90,16 +90,16 @@ local function coffeebeans_cookedfn()
 	inst.components.stackable.maxsize = TUNING.STACK_SIZE_SMALLITEM
 
 	inst:AddComponent("edible")
-	inst.components.edible.healthvalue = -2
-	inst.components.edible.hungervalue = 2
-	inst.components.edible.sanityvalue = 2
-
+	inst.components.edible.healthvalue = 3
+	inst.components.edible.hungervalue = 12.5
+	inst.components.edible.sanityvalue = -5
 	inst.components.edible.foodtype = FOODTYPE.GENERIC
 
 	inst:AddComponent("perishable")
 	inst.components.perishable:SetPerishTime(TUNING.PERISH_MED)
 	inst.components.perishable:StartPerishing()
 	inst.components.perishable.onperishreplacement = "spoiled_food"
+	
 	inst:AddComponent("bait")
 
 	MakeHauntableWork(inst)

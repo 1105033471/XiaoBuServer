@@ -100,7 +100,7 @@ local function onattack(inst, attacker, target)
 			fx.Transform:SetPosition(pos:Get())
 			
             if target.components.freezable then
-                target.components.freezable:AddColdness(0.5)
+                target.components.freezable:AddColdness(1)
                 target.components.freezable:SpawnShatterFX()
             end
 			target.components.health:DoDelta(-2)				-- 冰冻造成2点伤害

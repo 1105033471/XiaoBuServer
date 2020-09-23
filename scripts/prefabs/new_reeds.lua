@@ -19,7 +19,7 @@ local function onpickedfn(inst)
 	local ents = TheSim:FindEntities(x, y, z, 30, {"reeds"}, nil, nil)
 	local count = ents == nil and 0 or #ents		-- 附近30码的芦苇丛数量
 	
-	local chance = 0.05*(40-count)/40
+	local chance = 0.09*(40-count)/40
 	
 	-- print("chance = "..chance)
 	if math.random() < chance then

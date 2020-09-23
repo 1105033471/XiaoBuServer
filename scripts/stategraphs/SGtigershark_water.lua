@@ -268,7 +268,7 @@ end
             inst.AnimState:PushAnimation("launch_up_loop", true)
             inst.components.combat:DoAreaAttack(inst, TIGERSHARK_SPLASH_RADIUS)
 
-			SpawnWavesSW(inst, 9, 360, 12, nil, nil, 3, true, true)
+			-- SpawnWavesSW(inst, 9, 360, 12, nil, nil, 3, true, true)
         end,
 
         timeline =
@@ -314,7 +314,7 @@ end
 
             inst.AnimState:PlayAnimation("launch_up_pre")
             inst.components.combat:DoAreaAttack(inst, TIGERSHARK_SPLASH_RADIUS)
-			SpawnWavesSW(inst, 9, 360, 12, nil, nil, 3, true, true)
+			-- SpawnWavesSW(inst, 9, 360, 12, nil, nil, 3, true, true)
         end,
 		
 		        events =
@@ -473,7 +473,7 @@ ground ~= GROUND.OCEAN_HAZARDOUS then
             inst.components.locomotor.disable = false
             inst.AnimState:PlayAnimation("launch_down_pst")
             inst.components.combat:DoAreaAttack(inst, TIGERSHARK_SPLASH_RADIUS)
-            SpawnWavesSW(inst, 9, 360, 12, nil, nil, 3, true, true)
+            -- SpawnWavesSW(inst, 9, 360, 12, nil, nil, 3, true, true)
             inst.SoundEmitter:PlaySound("volcano/creatures/tiger_shark/splash_large")
 --            inst.SoundEmitter:PlaySound("volcano/creatures/tiger_shark/splash_explode")
         end,
@@ -540,7 +540,7 @@ ground ~= GROUND.OCEAN_HAZARDOUS then
             TimeEvent(15*FRAMES, function(inst)
                 inst.SoundEmitter:PlaySound("volcano/creatures/tiger_shark/water_attack")
                 inst.components.combat:DoAttack()
-                SpawnWavesSW(inst, 5, 110, 12, nil, nil, 3, true, true)
+                -- SpawnWavesSW(inst, 5, 110, 12, nil, nil, 3, true, true)
             end),
 
             TimeEvent(27*FRAMES, function(inst)
@@ -794,7 +794,7 @@ CommonStates.AddRunStates(states,
 --                inst.sg:GoToState("dive")
 --            end
         end),
-        TimeEvent(0, function(inst) SpawnWavesSW(inst, 2, 160, 12, nil, nil, 3, true, true) end),
+        -- TimeEvent(0, function(inst) SpawnWavesSW(inst, 2, 160, 12, nil, nil, 3, true, true) end),
         TimeEvent(9*FRAMES, function(inst) inst.SoundEmitter:PlaySound("volcano/creatures/tiger_shark/run_down") end),
     },
     runtimeline =
@@ -806,7 +806,7 @@ CommonStates.AddRunStates(states,
                 inst.sg:GoToState("dive")
             end
         end),
-        TimeEvent(0, function(inst) SpawnWavesSW(inst, 2, 160, 12, nil, nil, 3, true, true) end),
+        -- TimeEvent(0, function(inst) SpawnWavesSW(inst, 2, 160, 12, nil, nil, 3, true, true) end),
         TimeEvent(9*FRAMES, function(inst) inst.SoundEmitter:PlaySound("volcano/creatures/tiger_shark/run_down") end),
     },
     endtimeline =

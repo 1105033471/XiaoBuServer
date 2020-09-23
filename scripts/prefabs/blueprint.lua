@@ -219,7 +219,7 @@ local function MakeSpecificBlueprint(specific_item)
         if is_rare then
             inst.components.named:SetName(subfmt(STRINGS.NAMES.BLUEPRINT_RARE, { item = STRINGS.NAMES[string.upper(inst.recipetouse)] }))
         else
-            inst.components.named:SetName(STRINGS.NAMES[string.upper(inst.recipetouse)].." "..STRINGS.NAMES.BLUEPRINT)
+            inst.components.named:SetName(tostring(STRINGS.NAMES[string.upper(inst.recipetouse)]).." "..STRINGS.NAMES.BLUEPRINT)
         end
         return inst
     end
@@ -254,7 +254,7 @@ local function MakeAnyBlueprintFromTab(recipetab)
             (#knownrecipes > 0 and knownrecipes[math.random(#knownrecipes)].name) or
             "unknown"
         inst.components.teacher:SetRecipe(inst.recipetouse)
-        inst.components.named:SetName(STRINGS.NAMES[string.upper(inst.recipetouse)].." "..STRINGS.NAMES.BLUEPRINT)
+        inst.components.named:SetName(tostring(STRINGS.NAMES[string.upper(inst.recipetouse)]).." "..STRINGS.NAMES.BLUEPRINT)
         return inst
     end
 end

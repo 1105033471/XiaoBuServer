@@ -20,6 +20,7 @@ end
 local MOD_GROUND_TURFS = {
     [GROUND.PIGRUINS] = "turf_pigruins",
     [GROUND.QUAGMIRE_GATEWAY] = "turf_quagmire_gateway",
+    [GROUND.BEACH] = "turf_beach",
 }
 
 local function SpawnTurf(turf, pt)      -- 在指定地点生成地形

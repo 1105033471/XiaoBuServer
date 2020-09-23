@@ -20,8 +20,8 @@ local assets = {
     Asset("ATLAS", "images/inventoryimages/fish_med_cooked.xml"),
     
     Asset("SOUNDPACKAGE", "sound/volcano.fev"),
-    Asset("SOUNDPACKAGE", "sound/dontstarve_DLC002.fev"),
     Asset("SOUND", "sound/volcano.fsb"),
+    Asset("SOUNDPACKAGE", "sound/dontstarve_DLC002.fev"),
 }
 
 for _,v in pairs(assets) do
@@ -32,13 +32,13 @@ TUNING.SHARKITTEN_SPEED_WALK = 4    -- 小虎鲨移动速度
 TUNING.SHARKITTEN_SPEED_RUN = 5     -- 小虎鲨移动速度
 TUNING.SHARKITTEN_HEALTH = 300      -- 小虎鲨血量
 
-AddPrefabPostInit("world", function(inst)
-    if not TheWorld.ismastersim then
-        return inst
-    end
+-- AddPrefabPostInit("world", function(inst)
+--     if not TheWorld.ismastersim then
+--         return inst
+--     end
     
-    inst:AddComponent("tigersharker")
-end)
+--     inst:AddComponent("tigersharker")
+-- end)
 
 -- 中毒！
 local function poinson(player)
@@ -58,13 +58,13 @@ AddPlayerPostInit(function(player)
                 player.poinsontask = player:DoPeriodicTask(4, poinson)
                 player.components.talker:Say("我得赶快离开！")
             end
-            --print("is poinsoning, player:"..tostring(player))
+            -- print("is poinsoning, player:"..tostring(player))
         else
             if player.poinsontask ~= nil then
                 player.poinsontask:Cancel()
                 player.poinsontask = nil
             end
-            --print("is not poinsoning, player:"..tostring(player))
+            -- print("is not poinsoning, player:"..tostring(player))
         end
     end)
 end)

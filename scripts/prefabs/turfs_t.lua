@@ -98,6 +98,7 @@ local turfs_t = {
     -- pigruins 地砖1
     {name = "pigruins", anim = "pigruins", tile = GROUND.PIGRUINS}, -- 1
     {name = "quagmire_gateway", anim = "quagmire_gateway", tile = GROUND.QUAGMIRE_GATEWAY},  -- 2
+    {name = "beach", anim = "pigruins", tile = GROUND.BEACH},
 }
 
 local turfs_prefab = {}

@@ -1,72 +1,7 @@
-local prefabs = {
-    "skull_chest",
-    "personal_chest",
-    
-    "treeroot",             -- 树根
-}
-for _,v in pairs(prefabs) do
-    table.insert(PrefabFiles, v)
-end
-
-local assets = {
-    Asset("ATLAS", "images/inventoryimages/skull_chest.xml"),        -- 末影箱
-    Asset("ATLAS", "images/inventoryimages/personal_chest.xml"),    -- 私人箱子
-    
-    Asset("ANIM", "anim/ui_chest_5x5.zip"),
-    Asset("ATLAS", "images/inventoryimages/ui_chest_5x5.xml"),
-    Asset("IMAGE", "images/inventoryimages/ui_chest_5x5.tex"),
-    
-    Asset("ANIM", "anim/ui_chest_5x10.zip"),
-    Asset("ATLAS", "images/inventoryimages/ui_chest_5x10.xml"),
-    Asset("IMAGE", "images/inventoryimages/ui_chest_5x10.tex"),
-    
-    Asset("ATLAS", "images/inventoryimages/treeroot.xml"),
-}
-
-for _,v in pairs(assets) do
-    table.insert(Assets, v)
-end
-
 local PERSONAL_CHEST_MAX = 3            -- 私人箱子建造上限
 local SKULL_CHEST_MAX = 3                -- 末影箱建造上限
 
--- 末影箱
-AddRecipe("skull_chest",
-    {
-        Ingredient("purplegem", 1),
-        Ingredient("boneshard", 4),
-        Ingredient("boards", 2),
-    },
-    RECIPETABS.MAGIC,
-    TECH.MAGIC_TWO,
-    "skull_chest_placer",
-    1,
-    nil,
-    nil,
-    nil,
-    "images/inventoryimages/skull_chest.xml",
-    "skull_chest.tex"
-)
 AddMinimapAtlas("images/inventoryimages/skull_chest.xml")
-
--- 私人箱子
-AddRecipe("personal_chest",
-    {
-        -- Ingredient("purplegem", 1),
-        Ingredient("treeroot", 4, "images/inventoryimages/treeroot.xml", false, "treeroot.tex"),
-        Ingredient("boards", 6),
-        Ingredient("livinglog", 4),
-    },
-    RECIPETABS.TOWN,
-    TECH.NONE,
-    "personal_chest_placer",
-    1,
-    nil,
-    nil,
-    nil,
-    "images/inventoryimages/personal_chest.xml",
-    "personal_chest.tex"
-)
 AddMinimapAtlas("images/inventoryimages/personal_chest.xml")
 
 -- 管理末影箱的建造数量
@@ -76,21 +11,14 @@ ACTIONS.BUILD.fn = function(act)
         return old_BUILD(act)
     end
     local player = act.doer
-    -- print("act.recipe is "..tostring(act.recipe))
-    -- print("act.recipe.product is "..tostring(act.recipe.product))    nil这里有点奇怪
-    -- print("act.doer is "..tostring(act.doer))
-    -- print("act.doer.userid is "..tostring(act.doer.userid))
     
     if tostring(act.recipe) == "skull_chest" then        -- 有点不太一样
-        -- print("start find!!!!!!!!")
         local skull_chest_count = 0        -- 统计建造者在世界上建造的末影箱数量
         local found_res = nil
         local found_dst = 99999999
         local x1, y1, z1 = player.Transform:GetWorldPosition()
         for k,v in pairs(Ents) do
             if v.prefab == "skull_chest" and v.ownerlist and v.ownerlist.master == player.userid then
-                -- print("find")
-                -- print("    v.owners is "..tostring(v.owners))
                 skull_chest_count = skull_chest_count + 1
                 
                 local x2, y2, z2 = v.Transform:GetWorldPosition()
@@ -101,23 +29,14 @@ ACTIONS.BUILD.fn = function(act)
                 end
             end
         end
-        -- print("end find!!!!!!!")
-        
+
         if skull_chest_count >= SKULL_CHEST_MAX then    -- 建造数量不能超过SKULL_CHEST_MAX个
-            player:DoTaskInTime(0.01, function()    -- 为什么延迟，因为官方会说: i cant do that
-                if player.components and player.components.talker then
-                    player.components.talker:Say("末影箱建造上限："..tostring(SKULL_CHEST_MAX))
-                end
-            end)
+            M_PlayerSay(player, "末影箱建造上限："..tostring(SKULL_CHEST_MAX))
             return false
         end
         
         if found_dst < 8 then
-            player:DoTaskInTime(0.01, function()
-                if player.components and player.components.talker then
-                    player.components.talker:Say("这里离我的另一个末影箱太近了！")
-                end
-            end)
+            M_PlayerSay(player, "这里离我的另一个末影箱太近了！")
             return false
         end
     end
@@ -131,11 +50,7 @@ ACTIONS.BUILD.fn = function(act)
         end
         
         if personal_chest_count >= PERSONAL_CHEST_MAX then        -- 建造超出数量了
-            player:DoTaskInTime(0.01, function()
-                if player.components and player.components.talker then
-                    player.components.talker:Say("私人箱子建造上限："..tostring(PERSONAL_CHEST_MAX))
-                end
-            end)
+            M_PlayerSay(player, "私人箱子建造上限："..tostring(PERSONAL_CHEST_MAX))
             return false
         end
     end
@@ -151,34 +66,20 @@ ACTIONS.HAMMER.fn = function(act)
     end
     
     local player = act.doer
-    -- print("start hammer!!!!!!!")
     if act.target and act.target.prefab == "skull_chest" then
-        -- print("    hammer skull_chest!!!")
-        -- print("    act.target.owners is "..tostring(act.target.owners))
-        -- print("    act.doer.userid is "..tostring(act.doer.userid))
         if act.target.ownerlist and act.target.ownerlist.master ~= player.userid then
-            player:DoTaskInTime(0.01, function()
-                if player.components and player.components.talker then
-                    player.components.talker:Say("这是别人建造的末影箱，我不能拆除")
-                end
-            end)
+            M_PlayerSay(player, "这是别人建造的末影箱，我不能拆除")
             return false
         end
     end
     
     if act.target and act.target.prefab == "personal_chest" then
-        -- local personal_chest_count = 0
-        if act.target.ownerlist and act.target.ownerlist.master ~= player.userid and not (player.Network and player.Network:IsServerAdmin()) then    -- 这里用防熊锁的ID
-            player:DoTaskInTime(0.01, function()
-                if player.components and player.components.talker then
-                    player.components.talker:Say("这是别人的私人箱子，我不能拆！")
-                end
-            end)
+        if act.target.ownerlist and not (player.Network and player.Network:IsServerAdmin()) and act.target.ownerlist.master ~= player.userid then    -- 这里用防熊锁的ID
+            M_PlayerSay(player, "这是别人的私人箱子，我不能拆！")
             return false
         end
     end
     
-    -- print("end hammer!!!!!!!")
     return old_HAMMER(act)
 end
 
@@ -189,11 +90,7 @@ ACTIONS.STORE.fn = function(act)
     local player = act.doer
     if target and target.prefab == "skull_chest" then
         if player and target.ownerlist and target.ownerlist.master ~= player.userid then
-            player:DoTaskInTime(0.01, function()
-                if player.components and player.components.talker then
-                    player.components.talker:Say("这是别人的末影箱，我不能存东西进去")
-                end
-            end)
+            M_PlayerSay(player, "这是别人的末影箱，我不能存东西进去")
             return false
         end
     end
@@ -205,31 +102,31 @@ end
 AddComponentPostInit("container", function(Container, target)
     local old_OpenFn = Container.Open
     function Container:Open(doer)
-        -- print("start open!!!!!!!!")
         if target.prefab == "skull_chest" then
-            -- print("    open skull_chest")
-            -- print("    target is "..tostring(target))
-            -- print("    doer is "..tostring(doer))
-            -- print("    target.owners is "..tostring(target.owners))
-            -- print("    doer.userid is "..tostring(doer.userid))
             if target and doer and target.ownerlist and target.ownerlist.master ~= doer.userid then
-                doer.components.talker:Say("这是别人的末影箱，我无法打开")
+                M_PlayerSay(doer, "这是别人的末影箱，我无法打开")
                 return false
             end
         end
         
         if target.prefab == "personal_chest" then
-            -- print("    open skull_chest")
-            -- print("    target is "..tostring(target))
-            -- print("    doer is "..tostring(doer))
-            -- print("    target.owners is "..tostring(target.owners))
-            -- print("    doer.userid is "..tostring(doer.userid))
             if target and doer and target.ownerlist and target.ownerlist.master ~= doer.userid and not (doer.Network and doer.Network:IsServerAdmin()) then
-                doer.components.talker:Say("这是别人的箱子，我无法打开")
-                return false
+                local owner = UserToPlayer(target.ownerlist.master)
+                if not table.contains(target.permission_list, doer.userid) then -- 没有权限但是想开别人的私人箱子
+
+                    M_PlayerSay(doer, "这是别人的私人箱子，我需要主人的权限")
+                    M_PlayerSay(owner, tostring(UserToName(doer.userid)) .. "正在尝试打开我的私人箱子\n(右键箱子可以给予TA权限)")
+                    target.player_buff = doer.userid
+
+                    target:DoTaskInTime(15, function()
+                        target.player_buff = nil
+                    end)
+                    return false
+                else    -- 有权限的人打开私人箱子，给予箱子主人提示
+                    M_PlayerSay(owner, tostring(UserToName(doer.userid)) .. "打开了我的私人箱子\n(使用<<皮肤法杖>>可以清除该箱子所有人的权限!)")
+                end
             end
         end
-        -- print("end open!!!!!")
         return old_OpenFn(self, doer)
     end
 end)
@@ -239,41 +136,22 @@ local old_CASTSPELL = ACTIONS.CASTSPELL.fn
 ACTIONS.CASTSPELL.fn = function(act)
     local staff = act.invobject or act.doer.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)        -- 如果施法的不是手部装备呢。。
     local act_pos = act:GetActionPoint()
-    if         staff
-        and staff.components.spellcaster
-        and staff.components.spellcaster:CanCast(act.doer, act.target, act_pos)
-        and act.target then
-            -- print("start castspell!!!!!!!!")
-            local player = act.doer
-            if act.target.prefab == "skull_chest" then
-                -- print("    castspell skull_chest")
-                -- print("    act.target.owners is "..tostring(act.target.owners))
-                -- print("    player.userid is "..tostring(player.userid))
-                if act.target.ownerlist and act.target.ownerlist.master ~= player.userid then
-                    player:DoTaskInTime(0.01, function()
-                        if player.components and player.components.talker then
-                            player.components.talker:Say("这是别人的末影箱，我不能这么做")
-                        end
-                    end)
-                    return false
-                end
+    if staff and staff.components.spellcaster and staff.components.spellcaster:CanCast(act.doer, act.target, act_pos) and act.target then
+        local player = act.doer
+        if act.target.prefab == "skull_chest" then
+            if act.target.ownerlist and act.target.ownerlist.master ~= player.userid then
+                M_PlayerSay(player, "这是别人的末影箱，我不能这么做")
+                return false
             end
-            
-            if act.target.prefab == "personal_chest" then
-                -- print("    castspell skull_chest")
-                -- print("    act.target.owners is "..tostring(act.target.owners))
-                -- print("    player.userid is "..tostring(player.userid))
-                if act.target.ownerlist and act.target.ownerlist.master ~= player.userid and not (player.Network and player.Network:IsServerAdmin()) then
-                    player:DoTaskInTime(0.01, function()
-                        if player.components and player.components.talker then
-                            player.components.talker:Say("这是别人的箱子，我不能这么做")
-                        end
-                    end)
-                    return false
-                end
-            end
-            -- print("end castspell!!!!!!!!")
         end
+        
+        if act.target.prefab == "personal_chest" then
+            if act.target.ownerlist and act.target.ownerlist.master ~= player.userid and not (player.Network and player.Network:IsServerAdmin()) then
+                M_PlayerSay(player, "这是别人的箱子，我不能这么做")
+                return false
+            end
+        end
+    end
         
     return old_CASTSPELL(act)
 end
@@ -283,7 +161,6 @@ local containers = require "containers"
 
 local params = {}
 
--- [[
 -- 5*10 私人箱子
 params.personal_chest = {
     widget = {
@@ -301,10 +178,8 @@ for y = 3.5, -0.5, -1 do    -- 这里设置每个格子在屏幕的坐标
         table.insert(params.personal_chest.widget.slotpos, Vector3(80 * x - 446 + 80, 80 * y - 80 * 2.5 + 83, 0))
     end
 end
---]]
 
 -- 5*5 末影箱
--- [[
 params.skull_chest = {
     widget = {
         slotpos = {},
@@ -321,7 +196,6 @@ for y = 3, -1, -1 do
         table.insert(params.skull_chest.widget.slotpos, Vector3(80 * x - 80 * 2 + 80, 80 * y - 80 * 2 + 80, 0))
     end
 end
---]]
 
 local old_widgetsetup = containers.widgetsetup
 function containers.widgetsetup(container, prefab, data)
@@ -350,19 +224,12 @@ local function dropTreeRoot(player)
         local target = data and data.target             -- 目标
         if not target then return end
         if action == ACTIONS.DIG and target:HasTag("tree") then
-            -- print("try to drop treeroot")
             local x, y, z = target.Transform:GetWorldPosition()
             local ents = TheSim:FindEntities(x, y, z, 30, {"tree"})
             local trees = ents and #ents or 0           -- 附近树的数量
-            local rootChance = 0.05 + 0.005*trees
-            -- local rootChance = 1
-            -- print("chance = "..rootChance)
-            -- print("target position: "..x.."   "..y.."   "..z)
+            local rootChance = 0.05 + 0.005*trees   -- 基础概率5%，附近每多一棵树增加概率0.5%
             if math.random() < rootChance then
                 local root = target.components.lootdropper:SpawnLootPrefab("treeroot", Vector3(x, y, z))    -- 不加坐标会生成在0，0，0处
-                -- local root = SpawnPrefab("treeroot")
-                -- root.Transform:SetPosition(x, y, z)
-                -- print("hit chance!")
             end
         end
     end)

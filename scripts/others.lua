@@ -238,6 +238,7 @@ if modmastersim then
 	AddComponentPostInit("diseaseable", DelayCure)
 	
 	--多枝树变小树枝
+    --[[
 	local Twiggys = 
 	{
 		"twiggytree",
@@ -260,6 +261,7 @@ if modmastersim then
 	for k, v in ipairs(Twiggys) do
 		AddPrefabPostInit(v, SaplingCure)
 	end
+    --]]
 end
 
 -- 暖石无耐久
@@ -331,7 +333,7 @@ local function catcoonfn(inst)
 		return inst
 	end
 	
-	inst.components.lootdropper:AddChanceLoot("cave_chocolate", .2)
+	inst.components.lootdropper:AddChanceLoot("cave_chocolate", .4)
 end
 AddPrefabPostInit('catcoon', catcoonfn)
 
@@ -435,36 +437,25 @@ AddPrefabPostInit("lightbulb", function(inst)
 	inst:RemoveComponent("perishable")
 end)
 
--- 南瓜灯去除新鲜度
---[[
-AddPrefabPostInit("pumpkin_lantern", function(inst)
-	if not TheWorld.ismastersim then
-		return inst
-	end
-	
-	inst:RemoveComponent("perishable")
-end)
---]]
-
 -- 新月刷新坟墓
 AddPrefabPostInit("mound", function(inst)
-	if not TheWorld.ismastersim then
-		return inst
-	end
-	
+	-- 获取之前的onfinishcallback函数
+	local onfinishcallback = GetUpvalueHelper(require("prefabs/mound").fn, "onfinishcallback")
+
 	local function onnewmoon(inst, isnewmoon)
 		if isnewmoon then		-- 新月时
-			if inst.components.workable then
-				return		-- 没有挖掘则不变
-			else	-- 直接移除原来的坟墓，并生成新的坟墓(显然，新做一个比修改原来的属性要简单的多)
-				local pt = inst:GetPosition()
-				local mound = SpawnPrefab("mound")
-				mound.Transform:SetPosition(pt.x, pt.y, pt.z)
-				inst:Remove()
+			if inst.components.workable ~= nil then
+				return			-- 没有挖掘则不变
 			end
+			inst.AnimState:PlayAnimation("gravedirt")
+
+			inst:AddComponent("workable")
+			inst.components.workable:SetWorkAction(ACTIONS.DIG)
+			inst.components.workable:SetWorkLeft(1)
+			inst.components.workable:SetOnFinishCallback(onfinishcallback)
 		end
 	end
-	
+
 	inst:WatchWorldState("isnewmoon", onnewmoon)
 end)
 
@@ -488,3 +479,6 @@ for _,v in pairs(marble_list) do
 		--]]
 	end)
 end
+
+-- 盐箱缓慢反鲜
+TUNING.PERISH_SALTBOX_MULT = -0.5

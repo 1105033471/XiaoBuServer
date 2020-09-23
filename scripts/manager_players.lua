@@ -243,24 +243,21 @@ if IsServer then
 			for word in string.gmatch(message, "%S+") do
 				table.insert(words, word) --分词
 			end
-
-			local recipient = nil
-			--local content = string.gsub(message, "\s+", "") --去掉所有空格
 			
 			if string.sub(message,1,1) == "#" then
 				local sayAction = nil
 				local sayToNum = nil
 				if tablelength(words) == 2 then
-					sayAction = words[1]
+					sayAction = string.lower(words[1])
 					sayToNum = _G.tonumber(words[2])
 				elseif tablelength(words) == 1 then
-					sayAction = string.sub(message,1,4)
+					sayAction = string.lower(string.sub(message,1,4))
 					sayToNum = _G.tonumber(string.sub(message,5,string.len(message)))
 				end
 
-				if sayToNum ~= nil and (string.lower(sayAction) == "#add" or string.lower(sayAction) == "#del") then
+				if sayToNum ~= nil and (sayAction == "#add" or sayAction == "#del") then
 					RefreshPlayers()
-					recipient = AllPlayers[sayToNum]
+					local recipient = AllPlayers[sayToNum]
 					recipient_client = AllClientPlayers[sayToNum]
 					if recipient_client ~= nil then
 						if inst.guard_authorization[userid] == nil then

@@ -359,9 +359,7 @@ if IsServer then
             return old_DIG(act)
         elseif
             act.target and
-                (act.target.prefab == "evergreen" or act.target.prefab == "deciduoustree" or
-                    act.target.prefab == "twiggytree" or
-                    act.target.prefab == "pinecone_sapling" or
+                (act.target.prefab == "pinecone_sapling" or
                     act.target.prefab == "acorn_sapling" or
                     act.target.prefab == "twiggy_nut_sapling" or
                     act.target.prefab == "rock_avocado_fruit_sprout_sapling")
@@ -902,7 +900,22 @@ if IsServer then
         return false
     end
 
-    --右键开锁控制
+    -- 右键开锁控制(常规)
+    local lock_tbl = {
+        "treasurechest",
+        "icebox",
+        "dragonflychest",
+        "cellar",
+        "chesterchest",
+        "venus_icebox",
+        "researchlab2",
+        "storeroom",
+    }
+
+    -- 右键给予单个玩家权限控制
+    local sigle_lock_tbl = {
+        "personal_chest",
+    }
     local old_TURNON = _G.ACTIONS.TURNON.fn
     _G.ACTIONS.TURNON.fn = function(act)
         testActPrint(act)
@@ -911,32 +924,7 @@ if IsServer then
         end
 
         if act.target then
-            if act.target.prefab == "firesuppressor" then
-                -- 有权限时直接处理
-                if CheckItemPermission(act.doer, act.target, true) then
-                    return old_TURNON(act)
-                elseif act.doer:HasTag("player") then
-                    -- 主人不为自己并且物品受权限控制
-                    local doer_num = GetPlayerIndex(act.doer.userid)
-                    local master = act.target.ownerlist and GetPlayerById(act.target.ownerlist.master) or nil
-                    if master ~= nil then
-                        PlayerSay(act.doer, GetSayMsg("permission_no", master.name, GetItemOldName(act.target)))
-                        PlayerSay(master, GetSayMsg("item_use", act.doer.name, GetItemOldName(act.target), doer_num))
-                    else
-                        PlayerSay(act.doer, GetSayMsg("player_leaved", GetPlayerNameByOwnerlist(act.target.ownerlist)))
-                    end
-                end
-
-                return false
-            elseif
-                act.target.prefab == "treasurechest" or act.target.prefab == "icebox" or
-                    act.target.prefab == "dragonflychest" or
-                    act.target.prefab == "cellar" or
-                    act.target.prefab == "chesterchest" or
-                    act.target.prefab == "venus_icebox" or
-                    act.target.prefab == "researchlab2" or
-                    act.target.prefab == "storeroom"
-             then
+            if table.contains(lock_tbl, act.target.prefab) then
                 if act.target.ownerlist ~= nil and act.target.ownerlist.master == act.doer.userid then
                     PlayerSay(act.doer, "已开锁！任何人都能打开")
                     return old_TURNON(act)
@@ -944,6 +932,10 @@ if IsServer then
                     PlayerSay(act.doer, "可惜，我不能给它上锁和开锁！")
                     return false
                 end
+            elseif table.contains(sigle_lock_tbl, act.target.prefab) and act.target.turnon_fn ~= nil then
+                local rsl = act.target.turnon_fn(act.target, act.doer)
+
+                return rsl and old_TURNON(act) or false
             end
         end
 
@@ -959,33 +951,7 @@ if IsServer then
         end
 
         if act.target then
-            if act.target.prefab == "firesuppressor" then
-                -- 有权限时直接处理
-                if CheckItemPermission(act.doer, act.target, true) then
-                    return old_TURNOFF(act)
-                elseif act.doer:HasTag("player") then
-                    -- 主人不为自己并且物品受权限控制
-                    local doer_num = GetPlayerIndex(act.doer.userid)
-                    local master = act.target.ownerlist and GetPlayerById(act.target.ownerlist.master) or nil
-                    if master ~= nil then
-                        PlayerSay(act.doer, GetSayMsg("permission_no", master.name, GetItemOldName(act.target)))
-                        PlayerSay(master, GetSayMsg("item_use", act.doer.name, GetItemOldName(act.target), doer_num))
-                    else
-                        PlayerSay(act.doer, GetSayMsg("player_leaved", GetPlayerNameByOwnerlist(act.target.ownerlist)))
-                    end
-                end
-
-                return false
-            elseif
-                act.target and
-                    (act.target.prefab == "treasurechest" or act.target.prefab == "icebox" or
-                        act.target.prefab == "dragonflychest" or
-                        act.target.prefab == "cellar" or
-                        act.target.prefab == "chesterchest" or
-                        act.target.prefab == "venus_icebox" or
-                        act.target.prefab == "researchlab2" or
-                        act.target.prefab == "storeroom")
-             then
+            if table.contains(lock_tbl, act.target.prefab) then
                 if act.target.saved_ownerlist ~= nil and act.target.saved_ownerlist.master == act.doer.userid then
                     PlayerSay(act.doer, "已上锁！只有自己能打开")
                     return old_TURNOFF(act)

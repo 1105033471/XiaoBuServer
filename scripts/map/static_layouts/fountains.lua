@@ -36,15 +36,15 @@ return {
       properties = {},
       encoding = "lua",
       data = {
-        13, 3, 3, 6, 13, 6, 6, 6, 13,
-        6, 26, 26, 5, 26, 26, 13, 26, 6,
-        13, 6, 11, 13, 5, 11, 3, 13, 6,
-        5, 6, 3, 5, 3, 13, 11, 26, 6,
-        3, 26, 11, 3, 3, 5, 3, 6, 13,
-        26, 13, 11, 13, 3, 3, 11, 13, 6,
-        6, 13, 3, 11, 11, 3, 3, 6, 26,
-        6, 26, 5, 13, 3, 6, 5, 6, 6,
-        13, 6, 26, 6, 13, 13, 6, 3, 13
+        2, 2, 2, 10, 10, 10, 2, 2, 2,
+        2, 2, 2, 10, 9, 10, 2, 2, 2,
+        2, 2, 10, 9, 9, 9, 10, 2, 2,
+        10, 10, 9, 9, 9, 9, 9, 10, 10,
+        10, 9, 9, 9, 9, 9, 9, 9, 10,
+        10, 10, 9, 9, 9, 9, 9, 10, 10,
+        2, 2, 10, 9, 9, 9, 10, 2, 2,
+        2, 2, 2, 10, 9, 10, 2, 2, 2,
+        2, 2, 2, 10, 10, 10, 2, 2, 2
       }
     },
     {
@@ -60,10 +60,210 @@ return {
           shape = "rectangle",
           x = 256,
           y = 256,
-          width = 0,
-          height = 0,
+          width = 64,
+          height = 64,
           visible = true,
           properties = {}
+        },
+        {
+          name = "",
+          type = "skeleton_player",
+          shape = "rectangle",
+          x = 0,
+          y = 448,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "skeleton_death",
+          }
+        },
+        {
+          name = "",
+          type = "skeleton_player",
+          shape = "rectangle",
+          x = 64,
+          y = 512,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "skeleton_death",
+          }
+        },
+        {
+          name = "",
+          type = "skeleton_player",
+          shape = "rectangle",
+          x = 448,
+          y = 512,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "skeleton_death",
+          }
+        },
+        {
+          name = "",
+          type = "skeleton_player",
+          shape = "rectangle",
+          x = 512,
+          y = 448,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "skeleton_death",
+          }
+        },
+        {
+          name = "",
+          type = "skeleton_player",
+          shape = "rectangle",
+          x = 448,
+          y = 0,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "skeleton_death",
+          }
+        },
+        {
+          name = "",
+          type = "skeleton_player",
+          shape = "rectangle",
+          x = 512,
+          y = 64,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "skeleton_death",
+          }
+        },
+        {
+          name = "",
+          type = "skeleton_player",
+          shape = "rectangle",
+          x = 64,
+          y = 0,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "skeleton_death",
+          }
+        },
+        {
+          name = "",
+          type = "skeleton_player",
+          shape = "rectangle",
+          x = 0,
+          y = 64,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "skeleton_death",
+          }
+        },
+        {
+          name = "",
+          type = "maxwelllight",
+          shape = "rectangle",
+          x = 128,
+          y = 128,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "maxwelllight",
+          shape = "rectangle",
+          x = 384,
+          y = 128,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "maxwelllight",
+          shape = "rectangle",
+          x = 128,
+          y = 384,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "maxwelllight",
+          shape = "rectangle",
+          x = 384,
+          y = 384,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "treasurechest",
+          shape = "rectangle",
+          x = 256,
+          y = 64,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "pray_chest",
+          }
+        },
+        {
+          name = "",
+          type = "treasurechest",
+          shape = "rectangle",
+          x = 448,
+          y = 256,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "pray_chest_fake",
+          }
+        },
+        {
+          name = "",
+          type = "treasurechest",
+          shape = "rectangle",
+          x = 256,
+          y = 448,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "pray_chest_fake",
+          }
+        },
+        {
+          name = "",
+          type = "treasurechest",
+          shape = "rectangle",
+          x = 64,
+          y = 256,
+          width = 64,
+          height = 64,
+          visible = true,
+          properties = {
+            ["scenario"] = "pray_chest_fake",
+          }
         }
       }
     }
